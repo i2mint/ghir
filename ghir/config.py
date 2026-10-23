@@ -45,9 +45,23 @@ DFLT_SETTINGS: Mapping[str, Any] = {
     "extract": "description_and_readme",
     # Root directories scanned (a few levels deep) for local clones.
     "local_roots": [os.environ.get("PP") or str(Path.home())],
+    # fnmatch patterns over local clone paths (absolute, or relative to a local
+    # root, like "q/private-repo"); a repo cloned at a matching path is never
+    # fetched or kept. None means ir's per-machine list (~/.config/ir/exclude),
+    # so a repo ir must not index is not indexed through GitHub either.
+    "local_exclude": None,
     "cache_dir": str(DFLT_CACHE_DIR),
     "corpus_name": DFLT_CORPUS_NAME,
 }
+
+
+def ir_excluded_patterns() -> list[str]:
+    """ir's per-machine exclude patterns, or ``[]`` with an ir that has none."""
+    try:
+        from ir.config import excluded_patterns
+    except ImportError:
+        return []
+    return excluded_patterns()
 
 
 def settings(path: str | Path | None = None, **overrides) -> dict:

@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import os
 import re
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
+from fnmatch import fnmatch
 from pathlib import Path
 
 #: How many directory levels below each root to look for checkouts.
@@ -57,3 +58,34 @@ def local_clones(
     for root in roots:
         walk(Path(root).expanduser(), 0)
     return found
+
+
+def excluded_clones(
+    clones: Mapping[str, str],
+    patterns: Iterable[str],
+    *,
+    roots: Iterable[str | Path] = (),
+) -> set[str]:
+    """Ids of ``clones`` whose path matches a pattern, absolute or root-relative.
+
+    >>> excluded_clones({"o/a": "/p/q/a", "o/b": "/p/t/b"}, ["q/*"], roots=["/p"])
+    {'o/a'}
+    """
+    patterns = list(patterns)
+    if not patterns:
+        return set()
+    roots = [Path(r).expanduser() for r in roots]
+
+    def candidates(path: str):
+        yield path
+        for root in roots:
+            try:
+                yield Path(path).relative_to(root).as_posix()
+            except ValueError:
+                pass
+
+    return {
+        rid
+        for rid, path in clones.items()
+        if any(fnmatch(c, p) for c in candidates(path) for p in patterns)
+    }

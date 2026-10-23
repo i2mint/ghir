@@ -46,7 +46,7 @@ Machine-specific choices go in `~/.config/ghir/config.json` (or `$GHIR_CONFIG`):
  "exclude": ["SomeClientOrg/*", "myorg/private-thing"]}
 ```
 
-An owner excluded with `owner/*` is never queried. Other keys: `extract`, `local_roots` (where clones are looked for; default `$PP` or your home), `cache_dir`, `corpus_name`.
+An owner excluded with `owner/*` is never queried. `local_exclude` takes patterns over local clone paths (`"q/private-repo"`); by default it is ir's own per-machine list, `~/.config/ir/exclude`, so a repo ir must not index is not fetched, cached or shown through GitHub either. A refresh purges cached repos that have become excluded. Other keys: `extract`, `local_roots` (where clones are looked for; default `$PP` or your home), `cache_dir`, `corpus_name`.
 
 ## Using it from ir
 

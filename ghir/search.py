@@ -19,7 +19,8 @@ from collections.abc import Callable, Iterable, Mapping, MutableMapping
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from .cache import repo_store
+from .cache import excluded_ids, repo_store
+from .fetch import is_excluded
 from .config import settings as _settings
 from .extract import Extractor, resolve_extractor
 from .local import local_clones
@@ -162,10 +163,13 @@ def search(
             "The ghir cache is empty; fill it first with `ghir refresh` "
             "(or ghir.refresh())."
         )
+    clones = local_clones(s["local_roots"])
+    exclude = [*s["exclude"], *excluded_ids(s, clones=clones)]
     repos = {
         rid: rec
         for rid, rec in store.items()
-        if (include_forks or not rec.get("is_fork"))
+        if not is_excluded(rid, exclude)
+        and (include_forks or not rec.get("is_fork"))
         and (include_archived or not rec.get("is_archived"))
     }
     docs = {r["id"]: r for r in ir_records(repos, extract=s["extract"])}
@@ -173,7 +177,6 @@ def search(
     if ranker is ir_rank:
         rank_kw.setdefault("corpus_name", _corpus_name(s["corpus_name"], s["extract"]))
     ranked = ranker(query, docs, k=k, **rank_kw)
-    clones = local_clones(s["local_roots"])
     return [
         RepoHit(
             id=rid,
