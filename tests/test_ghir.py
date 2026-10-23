@@ -8,6 +8,13 @@ from ghir.local import local_clones
 from ghir.search import grep_rank, search
 
 
+def _hermetic(tmp_path, monkeypatch):
+    """Settings that read no machine config and scan no real directories."""
+    cfg = tmp_path / "hermetic.json"
+    cfg.write_text('{"local_exclude": [], "local_roots": []}')
+    monkeypatch.setenv("GHIR_CONFIG", str(cfg))
+
+
 def _node(owner, name, description="", readme=""):
     return {
         "nameWithOwner": f"{owner}/{name}",
@@ -88,7 +95,7 @@ def test_fetch_halves_page_size_on_gateway_error():
 
 
 def test_refresh_merges_and_keeps_unseen(tmp_path, monkeypatch):
-    monkeypatch.setenv("GHIR_CONFIG", str(tmp_path / "none.json"))
+    _hermetic(tmp_path, monkeypatch)
     store = {"gone/old": {"id": "gone/old", "description": "kept"}}
     counts = refresh(
         ["acme", "missing"], store=store, graphql=fake_graphql(), owners=list
@@ -99,12 +106,13 @@ def test_refresh_merges_and_keeps_unseen(tmp_path, monkeypatch):
         "updated": 0,
         "kept": 1,
         "failed": {},
+        "purged": 0,
     }
     assert "gone/old" in store and store["acme/cards"]["fetched_at"]
 
 
 def test_refresh_records_failed_locations(tmp_path, monkeypatch):
-    monkeypatch.setenv("GHIR_CONFIG", str(tmp_path / "none.json"))
+    _hermetic(tmp_path, monkeypatch)
 
     def broken(query, variables):
         raise RuntimeError("gh api graphql failed: HTTP 401")
@@ -124,7 +132,7 @@ def test_local_clones(tmp_path):
 
 @pytest.fixture
 def filled(tmp_path, monkeypatch):
-    monkeypatch.setenv("GHIR_CONFIG", str(tmp_path / "none.json"))
+    _hermetic(tmp_path, monkeypatch)
     store = {}
     refresh(["acme", "other"], store=store, graphql=fake_graphql(), owners=list)
     clone = tmp_path / "src" / "cards" / ".git"
@@ -162,6 +170,23 @@ def test_grep_rank_empty_query():
 
 
 def test_empty_cache_says_how_to_fill(tmp_path, monkeypatch):
-    monkeypatch.setenv("GHIR_CONFIG", str(tmp_path / "none.json"))
+    _hermetic(tmp_path, monkeypatch)
     with pytest.raises(LookupError, match="ghir refresh"):
         search("x", store={})
+
+
+def test_local_exclude_skips_purges_and_hides(tmp_path, monkeypatch):
+    cfg = tmp_path / "cfg.json"
+    clone = tmp_path / "src" / "q" / "cards" / ".git"
+    clone.mkdir(parents=True)
+    (clone / "config").write_text("url = git@github.com:acme/cards.git\n")
+    cfg.write_text(
+        '{"local_exclude": ["q/*"], "local_roots": ["%s"]}' % (tmp_path / "src")
+    )
+    monkeypatch.setenv("GHIR_CONFIG", str(cfg))
+    store = {"acme/cards": {"id": "acme/cards", "description": "stale copy"}}
+    counts = refresh(["acme"], store=store, graphql=fake_graphql(), owners=list)
+    assert counts["purged"] == 1 and "acme/cards" not in store
+    assert counts["fetched"] == 2  # beats, secret
+    store["acme/cards"] = {"id": "acme/cards", "description": "cards"}
+    assert search("cards", store=store, rank="grep") == []

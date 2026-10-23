@@ -19,8 +19,10 @@ from pathlib import Path
 
 from dol import JsonFiles, mk_dirs_if_missing, wrap_kvs
 
+from .config import ir_excluded_patterns
 from .config import settings as _settings
-from .fetch import fetch_repos
+from .fetch import fetch_repos, is_excluded
+from .local import excluded_clones, local_clones
 
 #: Repo ids contain a "/", which becomes a directory level (owner/name.json).
 _EXT = ".json"
@@ -37,6 +39,16 @@ def repo_store(cache_dir: str | Path | None = None) -> MutableMapping:
     )
 
 
+def excluded_ids(s: dict, *, clones: dict | None = None) -> set[str]:
+    """Lowercased ids of locally cloned repos under a ``local_exclude`` pattern."""
+    patterns = s["local_exclude"]
+    patterns = ir_excluded_patterns() if patterns is None else patterns
+    if not patterns:
+        return set()
+    clones = local_clones(s["local_roots"]) if clones is None else clones
+    return excluded_clones(clones, patterns, roots=s["local_roots"])
+
+
 def refresh(
     locations: Iterable[str] | None = None,
     *,
@@ -50,15 +62,20 @@ def refresh(
     Returns counts: ``{"fetched", "added", "updated", "kept"}`` where ``kept`` is
     the number of cached records this fetch did not see (and left alone), plus
     ``"failed"``: ``{location: error}`` for locations that could not be fetched
-    (their cached records are kept).
+    (their cached records are kept), and ``"purged"``: cached records removed
+    because they are now excluded (by ``exclude`` or ``local_exclude``).
     """
     s = _settings(locations=locations, exclude=exclude)
     store = repo_store(s["cache_dir"]) if store is None else store
+    exclude = [*s["exclude"], *excluded_ids(s)]
+    purged = [rid for rid in list(store) if is_excluded(rid, exclude)]
+    for rid in purged:
+        del store[rid]
     before = set(store)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     seen, failed = set(), {}
     fetch_kwargs.setdefault("on_error", lambda loc, e: failed.update({loc: str(e)}))
-    for rec in fetch(s["locations"], exclude=s["exclude"], **fetch_kwargs):
+    for rec in fetch(s["locations"], exclude=exclude, **fetch_kwargs):
         store[rec["id"]] = {**rec, "fetched_at": now}
         seen.add(rec["id"])
     return {
@@ -67,4 +84,5 @@ def refresh(
         "updated": len(seen & before),
         "kept": len(before - seen),
         "failed": failed,
+        "purged": len(purged),
     }
