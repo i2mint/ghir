@@ -16,5 +16,6 @@ ghir.config
 
    .. autosummary::
    
+      ir_excluded_patterns
       settings
    

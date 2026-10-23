@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/documentation_options.js?v=e3a6060d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.1" />
+  <meta name="docsearch:version" content="0.0.2" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -386,7 +386,7 @@ ghir<span class="w"> </span>search<span class="w"> </span><span class="s2">"flas
 <span class="w"> </span><span class="nt">"exclude"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"SomeClientOrg/*"</span><span class="p">,</span><span class="w"> </span><span class="s2">"myorg/private-thing"</span><span class="p">]}</span>
 </pre></div>
 </div>
-<p>An owner excluded with <code class="docutils literal notranslate"><span class="pre">owner/*</span></code> is never queried. Other keys: <code class="docutils literal notranslate"><span class="pre">extract</span></code>, <code class="docutils literal notranslate"><span class="pre">local_roots</span></code> (where clones are looked for; default <code class="docutils literal notranslate"><span class="pre">$PP</span></code> or your home), <code class="docutils literal notranslate"><span class="pre">cache_dir</span></code>, <code class="docutils literal notranslate"><span class="pre">corpus_name</span></code>.</p>
+<p>An owner excluded with <code class="docutils literal notranslate"><span class="pre">owner/*</span></code> is never queried. <code class="docutils literal notranslate"><span class="pre">local_exclude</span></code> takes patterns over local clone paths (<code class="docutils literal notranslate"><span class="pre">&quot;q/private-repo&quot;</span></code>); by default it is ir’s own per-machine list, <code class="docutils literal notranslate"><span class="pre">~/.config/ir/exclude</span></code>, so a repo ir must not index is not fetched, cached or shown through GitHub either. A refresh purges cached repos that have become excluded. Other keys: <code class="docutils literal notranslate"><span class="pre">extract</span></code>, <code class="docutils literal notranslate"><span class="pre">local_roots</span></code> (where clones are looked for; default <code class="docutils literal notranslate"><span class="pre">$PP</span></code> or your home), <code class="docutils literal notranslate"><span class="pre">cache_dir</span></code>, <code class="docutils literal notranslate"><span class="pre">corpus_name</span></code>.</p>
 </section>
 <section id="using-it-from-ir">
 <h2>Using it from ir<a class="headerlink" href="#using-it-from-ir" title="Link to this heading">#</a></h2>
@@ -402,7 +402,7 @@ ir<span class="w"> </span>discover<span class="w"> </span>gh_repos<span class="w
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-23 06:44 UTC from <a href="https://github.com/i2mint/ghir/commit/d4bfca834f1dea590f7a8c3ef974ecd98a2925b3">d4bfca8</a> (main) · ghir 0.0.1 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-23 06:54 UTC from <a href="https://github.com/i2mint/ghir/commit/f4ae6e093da0be4327317a7ce0b043ddd9b69b4c">f4ae6e0</a> (main) · ghir 0.0.2 · <a href="about-this-build.html">about this build</a></p>
 
                 </article>
               

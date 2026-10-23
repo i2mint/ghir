@@ -13,13 +13,26 @@ Scans root directories a few levels deep for git checkouts and reads each one’
 
 ### Functions
 
-| [`local_clones`](#ghir.local.local_clones)(roots, \*[, max_depth])   | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.   |
-|-----------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| [`origin_repo_id`](#ghir.local.origin_repo_id)(config_text)            | The `owner/name` of the first GitHub remote in a `.git/config`.        |
+| [`excluded_clones`](#ghir.local.excluded_clones)(clones, patterns, \*[, roots])   | Ids of `clones` whose path matches a pattern, absolute or root-relative.   |
+|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| [`local_clones`](#ghir.local.local_clones)(roots, \*[, max_depth])             | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.       |
+| [`origin_repo_id`](#ghir.local.origin_repo_id)(config_text)                      | The `owner/name` of the first GitHub remote in a `.git/config`.            |
 
 ### ghir.local.DFLT_MAX_DEPTH *= 3*
 
 How many directory levels below each root to look for checkouts.
+
+### ghir.local.excluded_clones(clones, patterns, , roots=())
+
+Ids of `clones` whose path matches a pattern, absolute or root-relative.
+
+```pycon
+>>> excluded_clones({"o/a": "/p/q/a", "o/b": "/p/t/b"}, ["q/*"], roots=["/p"])
+{'o/a'}
+```
+
+* **Return type:**
+  [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ghir.local.local_clones(roots, , max_depth=3)
 

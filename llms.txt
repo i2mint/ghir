@@ -13,7 +13,7 @@
 - [ghir.extract](_autosummary/ghir.extract.html.md): Extraction: what text each cached repo contributes to the search.
 - [ghir.fetch](_autosummary/ghir.fetch.html.md): Fetching repo records from GitHub, through the &#96;gh&#96; CLI’s GraphQL access.
 - [ghir.local](_autosummary/ghir.local.html.md): Which GitHub repos are cloned on this machine, and where.
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-23 06:44 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-23 06:54 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
 
 ## Optional
 

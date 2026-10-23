@@ -24,8 +24,9 @@ belong to (see [`ghir.fetch.my_owners()`](ghir.fetch.html.md#ghir.fetch.my_owner
 
 ### Functions
 
-| [`settings`](#ghir.config.settings)([path])   | The effective settings: defaults, then the config file, then `overrides`.   |
-|---------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| [`ir_excluded_patterns`](#ghir.config.ir_excluded_patterns)()   | ir's per-machine exclude patterns, or `[]` with an ir that has none.      |
+|---------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`settings`](#ghir.config.settings)([path])         | The effective settings: defaults, then the config file, then `overrides`. |
 
 ### ghir.config.DFLT_CACHE_DIR *= PosixPath('/home/runner/.local/share/ghir/repos')*
 
@@ -38,6 +39,13 @@ The optional user settings file.
 ### ghir.config.DFLT_CORPUS_NAME *= 'gh_repos'*
 
 The ir corpus name the default records are registered under.
+
+### ghir.config.ir_excluded_patterns()
+
+ir’s per-machine exclude patterns, or `[]` with an ir that has none.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ghir.config.settings(path=None, \*\*overrides)
 

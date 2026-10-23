@@ -14,9 +14,17 @@ mapping drops in unchanged).
 
 ### Functions
 
-| [`refresh`](#ghir.cache.refresh)([locations, store, exclude, fetch])   | Fetch the repos of `locations` and merge them into the cache.   |
-|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| [`repo_store`](#ghir.cache.repo_store)([cache_dir])                       | The default cache: `{"owner/name": record}` over JSON files.    |
+| [`excluded_ids`](#ghir.cache.excluded_ids)(s, \*[, clones])               | Lowercased ids of locally cloned repos under a `local_exclude` pattern.   |
+|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`refresh`](#ghir.cache.refresh)([locations, store, exclude, fetch]) | Fetch the repos of `locations` and merge them into the cache.             |
+| [`repo_store`](#ghir.cache.repo_store)([cache_dir])                     | The default cache: `{"owner/name": record}` over JSON files.              |
+
+### ghir.cache.excluded_ids(s, , clones=None)
+
+Lowercased ids of locally cloned repos under a `local_exclude` pattern.
+
+* **Return type:**
+  [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ghir.cache.refresh(locations=None, \*, store=None, exclude=None, fetch=<function fetch_repos>, \*\*fetch_kwargs)
 
@@ -25,7 +33,8 @@ Fetch the repos of `locations` and merge them into the cache.
 Returns counts: `{"fetched", "added", "updated", "kept"}` where `kept` is
 the number of cached records this fetch did not see (and left alone), plus
 `"failed"`: `{location: error}` for locations that could not be fetched
-(their cached records are kept).
+(their cached records are kept), and `"purged"`: cached records removed
+because they are now excluded (by `exclude` or `local_exclude`).
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)

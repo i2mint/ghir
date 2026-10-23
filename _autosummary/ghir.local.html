@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/documentation_options.js?v=e3a6060d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.1" />
+  <meta name="docsearch:version" content="0.0.2" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -393,10 +393,13 @@
 <p class="rubric">Functions</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.local.local_clones" title="ghir.local.local_clones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_clones</span></code></a>(roots, *[, max_depth])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.local.excluded_clones" title="ghir.local.excluded_clones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">excluded_clones</span></code></a>(clones, patterns, *[, roots])</p></td>
+<td><p>Ids of <code class="docutils literal notranslate"><span class="pre">clones</span></code> whose path matches a pattern, absolute or root-relative.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ghir.local.local_clones" title="ghir.local.local_clones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_clones</span></code></a>(roots, *[, max_depth])</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{&quot;owner/name&quot;</span> <span class="pre">(lowercased):</span> <span class="pre">path}</span></code> for git checkouts under <code class="docutils literal notranslate"><span class="pre">roots</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ghir.local.origin_repo_id" title="ghir.local.origin_repo_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin_repo_id</span></code></a>(config_text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.local.origin_repo_id" title="ghir.local.origin_repo_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin_repo_id</span></code></a>(config_text)</p></td>
 <td><p>The <code class="docutils literal notranslate"><span class="pre">owner/name</span></code> of the first GitHub remote in a <code class="docutils literal notranslate"><span class="pre">.git/config</span></code>.</p></td>
 </tr>
 </tbody>
@@ -406,6 +409,21 @@
 <dt class="sig sig-object py" id="ghir.local.DFLT_MAX_DEPTH">
 <span class="sig-prename descclassname"><span class="pre">ghir.local.</span></span><span class="sig-name descname"><span class="pre">DFLT_MAX_DEPTH</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#ghir.local.DFLT_MAX_DEPTH" title="Link to this definition">#</a></dt>
 <dd><p>How many directory levels below each root to look for checkouts.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ghir.local.excluded_clones">
+<span class="sig-prename descclassname"><span class="pre">ghir.local.</span></span><span class="sig-name descname"><span class="pre">excluded_clones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clones</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">roots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ghir/local.html#excluded_clones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ghir.local.excluded_clones" title="Link to this definition">#</a></dt>
+<dd><p>Ids of <code class="docutils literal notranslate"><span class="pre">clones</span></code> whose path matches a pattern, absolute or root-relative.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">excluded_clones</span><span class="p">({</span><span class="s2">"o/a"</span><span class="p">:</span> <span class="s2">"/p/q/a"</span><span class="p">,</span> <span class="s2">"o/b"</span><span class="p">:</span> <span class="s2">"/p/t/b"</span><span class="p">},</span> <span class="p">[</span><span class="s2">"q/*"</span><span class="p">],</span> <span class="n">roots</span><span class="o">=</span><span class="p">[</span><span class="s2">"/p"</span><span class="p">])</span>
+<span class="go">{'o/a'}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#set" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -477,6 +495,7 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.local.DFLT_MAX_DEPTH"><code class="docutils literal notranslate"><span class="pre">DFLT_MAX_DEPTH</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.local.excluded_clones"><code class="docutils literal notranslate"><span class="pre">excluded_clones()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.local.local_clones"><code class="docutils literal notranslate"><span class="pre">local_clones()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.local.origin_repo_id"><code class="docutils literal notranslate"><span class="pre">origin_repo_id()</span></code></a></li>
 </ul>

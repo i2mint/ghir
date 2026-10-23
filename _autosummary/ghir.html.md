@@ -106,7 +106,8 @@ Fetch the repos of `locations` and merge them into the cache.
 Returns counts: `{"fetched", "added", "updated", "kept"}` where `kept` is
 the number of cached records this fetch did not see (and left alone), plus
 `"failed"`: `{location: error}` for locations that could not be fetched
-(their cached records are kept).
+(their cached records are kept), and `"purged"`: cached records removed
+because they are now excluded (by `exclude` or `local_exclude`).
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)

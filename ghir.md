@@ -1,4 +1,4 @@
-> built 2026-10-23 06:44 UTC from d4bfca8 (main) · ghir 0.0.1. Details: build_info.json
+> built 2026-10-23 06:54 UTC from f4ae6e0 (main) · ghir 0.0.2. Details: build_info.json
 
 # index.html.md
 
@@ -52,7 +52,7 @@ Machine-specific choices go in `~/.config/ghir/config.json` (or `$GHIR_CONFIG`):
  "exclude": ["SomeClientOrg/*", "myorg/private-thing"]}
 ```
 
-An owner excluded with `owner/*` is never queried. Other keys: `extract`, `local_roots` (where clones are looked for; default `$PP` or your home), `cache_dir`, `corpus_name`.
+An owner excluded with `owner/*` is never queried. `local_exclude` takes patterns over local clone paths (`"q/private-repo"`); by default it is ir’s own per-machine list, `~/.config/ir/exclude`, so a repo ir must not index is not fetched, cached or shown through GitHub either. A refresh purges cached repos that have become excluded. Other keys: `extract`, `local_roots` (where clones are looked for; default `$PP` or your home), `cache_dir`, `corpus_name`.
 
 ## Using it from ir
 
@@ -86,9 +86,17 @@ mapping drops in unchanged).
 
 ### Functions
 
-| [`refresh`](_autosummary/ghir.cache.html.md#ghir.cache.refresh)([locations, store, exclude, fetch])   | Fetch the repos of `locations` and merge them into the cache.   |
-|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| [`repo_store`](_autosummary/ghir.cache.html.md#ghir.cache.repo_store)([cache_dir])                       | The default cache: `{"owner/name": record}` over JSON files.    |
+| [`excluded_ids`](_autosummary/ghir.cache.html.md#ghir.cache.excluded_ids)(s, \*[, clones])               | Lowercased ids of locally cloned repos under a `local_exclude` pattern.   |
+|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`refresh`](_autosummary/ghir.cache.html.md#ghir.cache.refresh)([locations, store, exclude, fetch]) | Fetch the repos of `locations` and merge them into the cache.             |
+| [`repo_store`](_autosummary/ghir.cache.html.md#ghir.cache.repo_store)([cache_dir])                     | The default cache: `{"owner/name": record}` over JSON files.              |
+
+### ghir.cache.excluded_ids(s, , clones=None)
+
+Lowercased ids of locally cloned repos under a `local_exclude` pattern.
+
+* **Return type:**
+  [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ghir.cache.refresh(locations=None, \*, store=None, exclude=None, fetch=<function fetch_repos>, \*\*fetch_kwargs)
 
@@ -97,7 +105,8 @@ Fetch the repos of `locations` and merge them into the cache.
 Returns counts: `{"fetched", "added", "updated", "kept"}` where `kept` is
 the number of cached records this fetch did not see (and left alone), plus
 `"failed"`: `{location: error}` for locations that could not be fetched
-(their cached records are kept).
+(their cached records are kept), and `"purged"`: cached records removed
+because they are now excluded (by `exclude` or `local_exclude`).
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
@@ -138,8 +147,9 @@ belong to (see [`ghir.fetch.my_owners()`](_autosummary/ghir.fetch.html.md#ghir.f
 
 ### Functions
 
-| [`settings`](_autosummary/ghir.config.html.md#ghir.config.settings)([path])   | The effective settings: defaults, then the config file, then `overrides`.   |
-|---------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| [`ir_excluded_patterns`](_autosummary/ghir.config.html.md#ghir.config.ir_excluded_patterns)()   | ir's per-machine exclude patterns, or `[]` with an ir that has none.      |
+|---------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`settings`](_autosummary/ghir.config.html.md#ghir.config.settings)([path])         | The effective settings: defaults, then the config file, then `overrides`. |
 
 ### ghir.config.DFLT_CACHE_DIR *= PosixPath('/home/runner/.local/share/ghir/repos')*
 
@@ -152,6 +162,13 @@ The optional user settings file.
 ### ghir.config.DFLT_CORPUS_NAME *= 'gh_repos'*
 
 The ir corpus name the default records are registered under.
+
+### ghir.config.ir_excluded_patterns()
+
+ir’s per-machine exclude patterns, or `[]` with an ir that has none.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ghir.config.settings(path=None, \*\*overrides)
 
@@ -455,7 +472,8 @@ Fetch the repos of `locations` and merge them into the cache.
 Returns counts: `{"fetched", "added", "updated", "kept"}` where `kept` is
 the number of cached records this fetch did not see (and left alone), plus
 `"failed"`: `{location: error}` for locations that could not be fetched
-(their cached records are kept).
+(their cached records are kept), and `"purged"`: cached records removed
+because they are now excluded (by `exclude` or `local_exclude`).
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
@@ -523,13 +541,26 @@ Scans root directories a few levels deep for git checkouts and reads each one’
 
 ### Functions
 
-| [`local_clones`](_autosummary/ghir.local.html.md#ghir.local.local_clones)(roots, \*[, max_depth])   | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.   |
-|-----------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| [`origin_repo_id`](_autosummary/ghir.local.html.md#ghir.local.origin_repo_id)(config_text)            | The `owner/name` of the first GitHub remote in a `.git/config`.        |
+| [`excluded_clones`](_autosummary/ghir.local.html.md#ghir.local.excluded_clones)(clones, patterns, \*[, roots])   | Ids of `clones` whose path matches a pattern, absolute or root-relative.   |
+|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| [`local_clones`](_autosummary/ghir.local.html.md#ghir.local.local_clones)(roots, \*[, max_depth])             | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.       |
+| [`origin_repo_id`](_autosummary/ghir.local.html.md#ghir.local.origin_repo_id)(config_text)                      | The `owner/name` of the first GitHub remote in a `.git/config`.            |
 
 ### ghir.local.DFLT_MAX_DEPTH *= 3*
 
 How many directory levels below each root to look for checkouts.
+
+### ghir.local.excluded_clones(clones, patterns, , roots=())
+
+Ids of `clones` whose path matches a pattern, absolute or root-relative.
+
+```pycon
+>>> excluded_clones({"o/a": "/p/q/a", "o/b": "/p/t/b"}, ["q/*"], roots=["/p"])
+{'o/a'}
+```
+
+* **Return type:**
+  [`set`](https://docs.python.org/3/builtins/stdtypes.html#set)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ghir.local.local_clones(roots, , max_depth=3)
 
@@ -559,18 +590,18 @@ The `owner/name` of the first GitHub remote in a `.git/config`.
 
 # About this build
 
-This documentation was built on **2026-10-23 06:44 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/d4bfca834f1dea590f7a8c3ef974ecd98a2925b3"><code>d4bfca8</code></a> on branch <code>main</code>, for **ghir 0.0.1** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-23 06:54 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/f4ae6e093da0be4327317a7ce0b043ddd9b69b4c"><code>f4ae6e0</code></a> on branch <code>main</code>, for **ghir 0.0.2** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.1) is behind the latest release on PyPI (0.0.2): `pip install ghir` gives newer code than these docs describe.
+- The documented version (0.0.2) is behind the latest release on PyPI (0.0.3): `pip install ghir` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                    |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/ghir/commit/d4bfca834f1dea590f7a8c3ef974ecd98a2925b3"><code>d4bfca834f1dea590f7a8c3ef974ecd98a2925b3</code></a> |
+| Commit              | <a href="https://github.com/i2mint/ghir/commit/f4ae6e093da0be4327317a7ce0b043ddd9b69b4c"><code>f4ae6e093da0be4327317a7ce0b043ddd9b69b4c</code></a> |
 | Branch              | <code>main</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                               |
 | Working tree        | clean                                                                                                                                              |
@@ -581,9 +612,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/ghir</code>                                                                   |
-| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/39913126757">39913126757</a>          |
+| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/39914282776">39914282776</a>          |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>d4bfca834f1dea590f7a8c3ef974ecd98a2925b3</code> (in the history of the built commit) |
+| Event commit | <code>f4ae6e093da0be4327317a7ce0b043ddd9b69b4c</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -608,13 +639,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ghir/0.0.2/">0.0.2</a>, newer than the documented version (0.0.1).
+Latest release: <a href="https://pypi.org/project/ghir/0.0.3/">0.0.3</a>, newer than the documented version (0.0.2).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/ghir && cd ghir
-git checkout d4bfca834f1dea590f7a8c3ef974ecd98a2925b3
+git checkout f4ae6e093da0be4327317a7ce0b043ddd9b69b4c
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

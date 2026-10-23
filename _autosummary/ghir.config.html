@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/documentation_options.js?v=e3a6060d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.1" />
+  <meta name="docsearch:version" content="0.0.2" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -407,7 +407,10 @@ belong to (see <a class="reference internal" href="ghir.fetch.html#ghir.fetch.my
 <p class="rubric">Functions</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.config.settings" title="ghir.config.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a>([path])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.config.ir_excluded_patterns" title="ghir.config.ir_excluded_patterns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ir_excluded_patterns</span></code></a>()</p></td>
+<td><p>ir's per-machine exclude patterns, or <code class="docutils literal notranslate"><span class="pre">[]</span></code> with an ir that has none.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ghir.config.settings" title="ghir.config.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a>([path])</p></td>
 <td><p>The effective settings: defaults, then the config file, then <code class="docutils literal notranslate"><span class="pre">overrides</span></code>.</p></td>
 </tr>
 </tbody>
@@ -429,6 +432,17 @@ belong to (see <a class="reference internal" href="ghir.fetch.html#ghir.fetch.my
 <dt class="sig sig-object py" id="ghir.config.DFLT_CORPUS_NAME">
 <span class="sig-prename descclassname"><span class="pre">ghir.config.</span></span><span class="sig-name descname"><span class="pre">DFLT_CORPUS_NAME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'gh_repos'</span></span><a class="headerlink" href="#ghir.config.DFLT_CORPUS_NAME" title="Link to this definition">#</a></dt>
 <dd><p>The ir corpus name the default records are registered under.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ghir.config.ir_excluded_patterns">
+<span class="sig-prename descclassname"><span class="pre">ghir.config.</span></span><span class="sig-name descname"><span class="pre">ir_excluded_patterns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ghir/config.html#ir_excluded_patterns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ghir.config.ir_excluded_patterns" title="Link to this definition">#</a></dt>
+<dd><p>ir’s per-machine exclude patterns, or <code class="docutils literal notranslate"><span class="pre">[]</span></code> with an ir that has none.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -499,6 +513,7 @@ belong to (see <a class="reference internal" href="ghir.fetch.html#ghir.fetch.my
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.config.DFLT_CACHE_DIR"><code class="docutils literal notranslate"><span class="pre">DFLT_CACHE_DIR</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.config.DFLT_CONFIG_PATH"><code class="docutils literal notranslate"><span class="pre">DFLT_CONFIG_PATH</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.config.DFLT_CORPUS_NAME"><code class="docutils literal notranslate"><span class="pre">DFLT_CORPUS_NAME</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.config.ir_excluded_patterns"><code class="docutils literal notranslate"><span class="pre">ir_excluded_patterns()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.config.settings"><code class="docutils literal notranslate"><span class="pre">settings()</span></code></a></li>
 </ul>
   </nav></div>

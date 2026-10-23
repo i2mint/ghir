@@ -8,6 +8,7 @@ ghir.cache
 
    .. autosummary::
    
+      excluded_ids
       refresh
       repo_store
    
