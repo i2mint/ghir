@@ -1,0 +1,26 @@
+ghir.fetch
+==========
+
+.. automodule:: ghir.fetch
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      MIN_PAGE_SIZE
+      README_NAMES
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      expand_locations
+      fetch_location
+      fetch_repos
+      gh_api
+      gh_graphql
+      is_excluded
+      my_owners
+      normalize_repo
+   

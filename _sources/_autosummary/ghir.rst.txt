@@ -1,0 +1,38 @@
+﻿ghir
+====
+
+.. automodule:: ghir
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      fetch_repos
+      grep_rank
+      ir_rank
+      local_clones
+      records
+      refresh
+      register_corpus
+      repo_store
+      search
+      settings
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      RepoHit
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   cache
+   config
+   extract
+   fetch
+   local

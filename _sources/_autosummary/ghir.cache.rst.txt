@@ -1,0 +1,13 @@
+ghir.cache
+==========
+
+.. automodule:: ghir.cache
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      refresh
+      repo_store
+   

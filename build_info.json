@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-10-23T06:44:00Z",
+  "package": {
+    "name": "ghir",
+    "version": "0.0.1",
+    "display_name": "ghir",
+    "source": "pyproject.toml"
+  },
+  "git": {
+    "available": true,
+    "commit": "d4bfca834f1dea590f7a8c3ef974ecd98a2925b3",
+    "short_commit": "d4bfca8",
+    "branch": "main",
+    "tags": [],
+    "dirty": false,
+    "remote_url": "https://github.com/i2mint/ghir",
+    "commit_url": "https://github.com/i2mint/ghir/commit/d4bfca834f1dea590f7a8c3ef974ecd98a2925b3",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "i2mint/ghir",
+    "sha": "d4bfca834f1dea590f7a8c3ef974ecd98a2925b3",
+    "sha_in_history": true,
+    "ref": "refs/heads/main",
+    "ref_name": "main",
+    "run_id": "39913126757",
+    "run_url": "https://github.com/i2mint/ghir/actions/runs/39913126757",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.22",
+    "sphinx": "9.1.1",
+    "docutils": "0.22.4",
+    "python": "3.12.15"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "pydata_sphinx_theme",
+    "accent": "#006e4a",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/",
+      "examples/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 6,
+    "objects_documented": 35
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "0.0.2",
+    "relation": "behind",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/i2mint/ghir && cd ghir\ngit checkout d4bfca834f1dea590f7a8c3ef974ecd98a2925b3\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "warnings": [],
+  "alignment": {
+    "aligned": false,
+    "notes": [
+      "The documented version (0.0.1) is behind the latest release on PyPI (0.0.2): `pip install ghir` gives newer code than these docs describe."
+    ]
+  }
+}

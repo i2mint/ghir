@@ -1,0 +1,24 @@
+# ghir
+
+> Search your GitHub repos (cloned or not) as an ir corpus: locations, extraction, cache, ranking.
+
+
+## Pages
+
+- [ghir](index.html.md): Search your GitHub repos, cloned or not, across every organization you belong to. Fetch once, then s...
+- [API reference](api.html.md): | &#96;ghir&#96;   | Search your GitHub repos, cloned or not, as an &#96;ir&#96; corpus.   |
+- [ghir](_autosummary/ghir.html.md): Search your GitHub repos, cloned or not, as an &#96;ir&#96; corpus.
+- [ghir.cache](_autosummary/ghir.cache.html.md): The repo-record cache: a &#96;MutableMapping&#96; from &#96;owner/name&#96; to a record.
+- [ghir.config](_autosummary/ghir.config.html.md): Settings for ghir: where the cache lives and which repos are in scope.
+- [ghir.extract](_autosummary/ghir.extract.html.md): Extraction: what text each cached repo contributes to the search.
+- [ghir.fetch](_autosummary/ghir.fetch.html.md): Fetching repo records from GitHub, through the &#96;gh&#96; CLI’s GraphQL access.
+- [ghir.local](_autosummary/ghir.local.html.md): Which GitHub repos are cloned on this machine, and where.
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-23 06:44 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+
+## Optional
+
+- [ghir.md](ghir.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

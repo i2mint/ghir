@@ -1,0 +1,20 @@
+ghir.extract
+============
+
+.. automodule:: ghir.extract
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_README_CHARS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      description
+      description_and_readme
+      resolve_extractor
+   

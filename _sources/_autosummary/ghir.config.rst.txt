@@ -1,0 +1,20 @@
+ghir.config
+===========
+
+.. automodule:: ghir.config
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_CACHE_DIR
+      DFLT_CONFIG_PATH
+      DFLT_CORPUS_NAME
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      settings
+   

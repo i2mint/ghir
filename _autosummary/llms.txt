@@ -1,0 +1,17 @@
+# ghir
+
+> Search your GitHub repos (cloned or not) as an ir corpus: locations, extraction, cache, ranking.
+
+
+## Pages in this subsection
+
+- [ghir](ghir.html.md): Search your GitHub repos, cloned or not, as an &#96;ir&#96; corpus.
+- [ghir.cache](ghir.cache.html.md): The repo-record cache: a &#96;MutableMapping&#96; from &#96;owner/name&#96; to a record.
+- [ghir.config](ghir.config.html.md): Settings for ghir: where the cache lives and which repos are in scope.
+- [ghir.extract](ghir.extract.html.md): Extraction: what text each cached repo contributes to the search.
+- [ghir.fetch](ghir.fetch.html.md): Fetching repo records from GitHub, through the &#96;gh&#96; CLI’s GraphQL access.
+- [ghir.local](ghir.local.html.md): Which GitHub repos are cloned on this machine, and where.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

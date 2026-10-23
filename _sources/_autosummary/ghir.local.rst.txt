@@ -1,0 +1,19 @@
+ghir.local
+==========
+
+.. automodule:: ghir.local
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_MAX_DEPTH
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      local_clones
+      origin_repo_id
+   
