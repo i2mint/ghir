@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ghir"
-version = "0.0.1"
+version = "0.0.2"
 description = "Search your GitHub repos (cloned or not) as an ir corpus: locations, extraction, cache, ranking."
 readme = "README.md"
 requires-python = ">=3.10"
