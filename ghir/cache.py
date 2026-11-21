@@ -34,8 +34,8 @@ def repo_store(cache_dir: str | Path | None = None) -> MutableMapping:
     root.mkdir(parents=True, exist_ok=True)
     return wrap_kvs(
         mk_dirs_if_missing(JsonFiles(str(root))),
-        id_of_key=lambda k: k + _EXT,
-        key_of_id=lambda _id: _id[: -len(_EXT)],
+        key_encoder=lambda k: k + _EXT,
+        key_decoder=lambda _id: _id[: -len(_EXT)],
     )
 
 
