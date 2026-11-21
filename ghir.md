@@ -1,4 +1,4 @@
-> built 2026-10-23 06:54 UTC from f4ae6e0 (main) · ghir 0.0.2. Details: build_info.json
+> built 2026-11-21 17:45 UTC from b4c58ef (main) · ghir 0.0.3. Details: build_info.json
 
 # index.html.md
 
@@ -590,18 +590,18 @@ The `owner/name` of the first GitHub remote in a `.git/config`.
 
 # About this build
 
-This documentation was built on **2026-10-23 06:54 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/f4ae6e093da0be4327317a7ce0b043ddd9b69b4c"><code>f4ae6e0</code></a> on branch <code>main</code>, for **ghir 0.0.2** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-21 17:45 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d"><code>b4c58ef</code></a> on branch <code>main</code>, for **ghir 0.0.3** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.2) is behind the latest release on PyPI (0.0.3): `pip install ghir` gives newer code than these docs describe.
+- The documented version (0.0.3) is behind the latest release on PyPI (0.0.4): `pip install ghir` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                    |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/ghir/commit/f4ae6e093da0be4327317a7ce0b043ddd9b69b4c"><code>f4ae6e093da0be4327317a7ce0b043ddd9b69b4c</code></a> |
+| Commit              | <a href="https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d"><code>b4c58ef5512028d63126be57f2e35945901c6f7d</code></a> |
 | Branch              | <code>main</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                               |
 | Working tree        | clean                                                                                                                                              |
@@ -612,18 +612,18 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/ghir</code>                                                                   |
-| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/39914282776">39914282776</a>          |
+| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/44931630355">44931630355</a>          |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>f4ae6e093da0be4327317a7ce0b043ddd9b69b4c</code> (in the history of the built commit) |
+| Event commit | <code>b4c58ef5512028d63126be57f2e35945901c6f7d</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.22  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.15 |
+| Python   | 3.12.16 |
 
 ## Configuration as resolved
 
@@ -639,14 +639,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ghir/0.0.3/">0.0.3</a>, newer than the documented version (0.0.2).
+Latest release: <a href="https://pypi.org/project/ghir/0.0.4/">0.0.4</a>, newer than the documented version (0.0.3).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/ghir && cd ghir
-git checkout f4ae6e093da0be4327317a7ce0b043ddd9b69b4c
-pip install "epythet==0.2.22"
+git checkout b4c58ef5512028d63126be57f2e35945901c6f7d
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
