@@ -190,3 +190,21 @@ def test_local_exclude_skips_purges_and_hides(tmp_path, monkeypatch):
     assert counts["fetched"] == 2  # beats, secret
     store["acme/cards"] = {"id": "acme/cards", "description": "cards"}
     assert search("cards", store=store, rank="grep") == []
+
+
+def test_owners_module_is_light_and_fields_are_a_seam():
+    import subprocess
+    import sys
+
+    code = (
+        "import sys, ghir.owners as o;"
+        "assert 'ir' not in sys.modules and 'dol' not in sys.modules;"
+        "seen=[];"
+        "g=lambda q,v: seen.append(q) or {'repositoryOwner':{'repositories':"
+        "{'pageInfo':{'hasNextPage':False,'endCursor':None},"
+        "'nodes':[{'nameWithOwner':'a/b','viewerPermission':'WRITE'}]}}};"
+        "r=list(o.list_repos(['a'],graphql=g,fields='nameWithOwner viewerPermission',"
+        "normalize=lambda n:n['viewerPermission']));"
+        "assert r==['WRITE'] and 'viewerPermission' in seen[0], r"
+    )
+    subprocess.run([sys.executable, "-c", code], check=True)
