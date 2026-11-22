@@ -17,24 +17,26 @@ A *location* is one of:
 
 from __future__ import annotations
 
-import json
-import shutil
-import subprocess
 from collections.abc import Callable, Iterable, Iterator, Mapping
-from fnmatch import fnmatch
 from typing import Any
 
-GraphQL = Callable[[str, Mapping[str, Any]], dict]
+from .owners import (  # noqa: F401  (re-exported: the historical home of these names)
+    DFLT_PAGE_SIZE,
+    ME,
+    MIN_PAGE_SIZE,
+    GraphQL,
+    _paginate,
+    expand_owners,
+    gh_api,
+    gh_graphql,
+    is_excluded,
+    my_owners,
+    owner_nodes,
+)
 
-DFLT_PAGE_SIZE = 25
-#: On a gateway error (README blobs make pages slow), the page size is halved
-#: down to this before the error is let through.
-MIN_PAGE_SIZE = 3
-_TRANSIENT = ("HTTP 502", "HTTP 503", "HTTP 504", "timeout", "Timeout")
 #: README file names tried, in order, at the default branch's root.
 README_NAMES = ("README.md", "readme.md", "README.rst", "README", "README.txt")
 SEARCH_PREFIX = "search:"
-ME = "@me"
 
 _README_FIELDS = "\n".join(
     f'readme{i}: object(expression: "HEAD:{n}") {{ ... on Blob {{ text }} }}'
@@ -49,17 +51,6 @@ repositoryTopics(first: 20) {{ nodes {{ topic {{ name }} }} }}
 {_README_FIELDS}
 """
 
-OWNER_QUERY = f"""
-query($owner: String!, $after: String, $n: Int!) {{
-  repositoryOwner(login: $owner) {{
-    repositories(first: $n, after: $after, ownerAffiliations: OWNER) {{
-      pageInfo {{ hasNextPage endCursor }}
-      nodes {{ {REPO_FIELDS} }}
-    }}
-  }}
-}}
-"""
-
 SEARCH_QUERY = f"""
 query($q: String!, $after: String, $n: Int!) {{
   search(type: REPOSITORY, query: $q, first: $n, after: $after) {{
@@ -68,39 +59,6 @@ query($q: String!, $after: String, $n: Int!) {{
   }}
 }}
 """
-
-
-def gh_graphql(query: str, variables: Mapping[str, Any]) -> dict:
-    """Run a GraphQL query through ``gh api graphql`` and return its ``data``."""
-    if not shutil.which("gh"):
-        raise RuntimeError(
-            "ghir fetches through the GitHub CLI, which is not on PATH. "
-            "Install it (https://cli.github.com) and run `gh auth login`."
-        )
-    args = ["gh", "api", "graphql", "-f", f"query={query}"]
-    for k, v in variables.items():
-        if v is not None:
-            args += ["-F" if isinstance(v, int) else "-f", f"{k}={v}"]
-    proc = subprocess.run(args, capture_output=True, text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"gh api graphql failed: {proc.stderr.strip()}")
-    payload = json.loads(proc.stdout)
-    if payload.get("errors") and not payload.get("data"):
-        raise RuntimeError(f"GitHub GraphQL errors: {payload['errors']}")
-    return payload["data"]
-
-
-def gh_api(path: str) -> Any:
-    """``gh api <path>`` (REST), JSON-decoded."""
-    proc = subprocess.run(["gh", "api", path], capture_output=True, text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"gh api {path} failed: {proc.stderr.strip()}")
-    return json.loads(proc.stdout)
-
-
-def my_owners(*, rest: Callable[[str], Any] = gh_api) -> list[str]:
-    """The authenticated user's login followed by their organizations' logins."""
-    return [rest("user")["login"]] + [o["login"] for o in rest("user/orgs")]
 
 
 def normalize_repo(node: Mapping[str, Any]) -> dict:
@@ -143,31 +101,6 @@ def normalize_repo(node: Mapping[str, Any]) -> dict:
     }
 
 
-def _query_page(query: str, variables: dict, graphql: GraphQL) -> dict:
-    n = variables["n"]
-    while True:
-        try:
-            return graphql(query, {**variables, "n": n})
-        except RuntimeError as e:
-            if n <= MIN_PAGE_SIZE or not any(s in str(e) for s in _TRANSIENT):
-                raise
-            n = max(MIN_PAGE_SIZE, n // 2)
-
-
-def _paginate(query: str, variables: dict, path: str, graphql: GraphQL):
-    after = None
-    while True:
-        data = _query_page(query, {**variables, "after": after}, graphql)
-        for key in path.split("."):
-            data = data[key] if data else None
-        if not data:  # unknown owner, say
-            return
-        yield from (n for n in data["nodes"] if n and n.get("nameWithOwner"))
-        if not data["pageInfo"]["hasNextPage"]:
-            return
-        after = data["pageInfo"]["endCursor"]
-
-
 def fetch_location(
     location: str,
     *,
@@ -179,11 +112,8 @@ def fetch_location(
         q = location[len(SEARCH_PREFIX) :].strip()
         nodes = _paginate(SEARCH_QUERY, {"q": q, "n": page_size}, "search", graphql)
     else:
-        nodes = _paginate(
-            OWNER_QUERY,
-            {"owner": location, "n": page_size},
-            "repositoryOwner.repositories",
-            graphql,
+        nodes = owner_nodes(
+            location, graphql=graphql, fields=REPO_FIELDS, page_size=page_size
         )
     yield from map(normalize_repo, nodes)
 
@@ -192,22 +122,7 @@ def expand_locations(
     locations: Iterable[str], *, owners: Callable[[], list[str]] = my_owners
 ) -> list[str]:
     """Replace ``"@me"`` by the user's owners; keep order, drop duplicates."""
-    out: list[str] = []
-    for loc in locations:
-        for item in owners() if loc == ME else [loc]:
-            if item not in out:
-                out.append(item)
-    return out
-
-
-def is_excluded(repo_id: str, exclude: Iterable[str]) -> bool:
-    """Whether ``owner/name`` matches any fnmatch pattern of ``exclude``.
-
-    >>> is_excluded("Acme/x", ["acme/*"]), is_excluded("i2mint/x", ["acme/*"])
-    (True, False)
-    """
-    rid = repo_id.lower()
-    return any(fnmatch(rid, p.lower()) for p in exclude)
+    return expand_owners(locations, me=owners)
 
 
 def fetch_repos(
