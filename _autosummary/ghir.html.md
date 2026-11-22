@@ -10,7 +10,7 @@ Four seams, each a keyword argument with a working default:
   description + topics + README head ([`ghir.extract`](ghir.extract.html.md#module-ghir.extract)).
 - **ranking** (`rank=`): `"ir"` (default, hybrid dense + BM25) or `"grep"`.
 - **cache** (`store=`): a `MutableMapping`; [`refresh()`](#ghir.refresh) merges into it,
-  [`search()`](#ghir.search) only reads it (offline).
+  [`search()`](ghir.search.html.md#ghir.search) only reads it (offline).
 
 ```pycon
 >>> import ghir
@@ -21,17 +21,17 @@ Four seams, each a keyword argument with a working default:
 
 ### Functions
 
-| [`fetch_repos`](#ghir.fetch_repos)(locations, \*[, exclude, ...])         | Yield repo records over all `locations`, skipping excluded repos.             |
-|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| [`grep_rank`](#ghir.grep_rank)(query, docs, \*[, k])                    | Fraction of query terms (as word prefixes) found in each repo's text.         |
-| [`ir_rank`](#ghir.ir_rank)(query, docs, \*[, k, mode, embedder, ...]) | Rank with `ir`: build (incrementally) then `ir.search`.                       |
-| [`local_clones`](#ghir.local_clones)(roots, \*[, max_depth])               | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.          |
-| [`records`](#ghir.records)()                                          | The default records, as a zero-argument fetcher for ir's registry.            |
-| [`refresh`](#ghir.refresh)([locations, store, exclude, fetch])        | Fetch the repos of `locations` and merge them into the cache.                 |
-| [`register_corpus`](#ghir.register_corpus)([name])                            | Register the cache as an ir corpus, so `ir discover <name> ...` works.        |
-| [`repo_store`](#ghir.repo_store)([cache_dir])                            | The default cache: `{"owner/name": record}` over JSON files.                  |
-| [`search`](#ghir.search)(query, \*[, k, rank, extract, store, ...])  | Rank cached repos for `query`; each hit says where it is cloned, if anywhere. |
-| [`settings`](#ghir.settings)([path])                                   | The effective settings: defaults, then the config file, then `overrides`.     |
+| [`fetch_repos`](#ghir.fetch_repos)(locations, \*[, exclude, ...])                    | Yield repo records over all `locations`, skipping excluded repos.             |
+|----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [`grep_rank`](#ghir.grep_rank)(query, docs, \*[, k])                               | Fraction of query terms (as word prefixes) found in each repo's text.         |
+| [`ir_rank`](#ghir.ir_rank)(query, docs, \*[, k, mode, embedder, ...])            | Rank with `ir`: build (incrementally) then `ir.search`.                       |
+| [`local_clones`](#ghir.local_clones)(roots, \*[, max_depth])                          | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.          |
+| [`records`](#ghir.records)()                                                     | The default records, as a zero-argument fetcher for ir's registry.            |
+| [`refresh`](#ghir.refresh)([locations, store, exclude, fetch])                   | Fetch the repos of `locations` and merge them into the cache.                 |
+| [`register_corpus`](#ghir.register_corpus)([name])                                       | Register the cache as an ir corpus, so `ir discover <name> ...` works.        |
+| [`repo_store`](#ghir.repo_store)([cache_dir])                                       | The default cache: `{"owner/name": record}` over JSON files.                  |
+| [`search`](ghir.search.html.md#ghir.search)(query, \*[, k, rank, extract, store, ...]) | Rank cached repos for `query`; each hit says where it is cloned, if anywhere. |
+| [`settings`](#ghir.settings)([path])                                              | The effective settings: defaults, then the config file, then `overrides`.     |
 
 ### Classes
 
@@ -156,3 +156,4 @@ The effective settings: defaults, then the config file, then `overrides`.
 | [`extract`](ghir.extract.html.md#module-ghir.extract) | Extraction: what text each cached repo contributes to the search.          |
 | [`fetch`](ghir.fetch.html.md#module-ghir.fetch)     | Fetching repo records from GitHub, through the `gh` CLI's GraphQL access.  |
 | [`local`](ghir.local.html.md#module-ghir.local)     | Which GitHub repos are cloned on this machine, and where.                  |
+| [`owners`](ghir.owners.html.md#module-ghir.owners)   | Owner logins -> repo records, stdlib only (no `ir`, no `dol`).             |

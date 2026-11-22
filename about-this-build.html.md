@@ -2,18 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-11-21 17:45 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d"><code>b4c58ef</code></a> on branch <code>main</code>, for **ghir 0.0.3** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 11:53 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02"><code>fb680d5</code></a> on branch <code>main</code>, for **ghir 0.0.4** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.3) is behind the latest release on PyPI (0.0.4): `pip install ghir` gives newer code than these docs describe.
+- The documented version (0.0.4) is behind the latest release on PyPI (0.0.5): `pip install ghir` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                    |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d"><code>b4c58ef5512028d63126be57f2e35945901c6f7d</code></a> |
+| Commit              | <a href="https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02"><code>fb680d520a3390845433b3969ab1bbdc5cc6ba02</code></a> |
 | Branch              | <code>main</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                               |
 | Working tree        | clean                                                                                                                                              |
@@ -24,9 +24,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/ghir</code>                                                                   |
-| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/44931630355">44931630355</a>          |
+| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/45019386562">45019386562</a>          |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>b4c58ef5512028d63126be57f2e35945901c6f7d</code> (in the history of the built commit) |
+| Event commit | <code>fb680d520a3390845433b3969ab1bbdc5cc6ba02</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -51,13 +51,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ghir/0.0.4/">0.0.4</a>, newer than the documented version (0.0.3).
+Latest release: <a href="https://pypi.org/project/ghir/0.0.5/">0.0.5</a>, newer than the documented version (0.0.4).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/ghir && cd ghir
-git checkout b4c58ef5512028d63126be57f2e35945901c6f7d
+git checkout fb680d520a3390845433b3969ab1bbdc5cc6ba02
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

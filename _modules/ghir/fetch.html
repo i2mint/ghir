@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=47de8214"></script>
+    <script src="../../_static/documentation_options.js?v=8c5712d9"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.3" />
+  <meta name="docsearch:version" content="0.0.4" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -717,24 +717,26 @@ window.runMermaid = runMermaid;</script>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">fnmatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">fnmatch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="n">GraphQL</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">dict</span><span class="p">]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.owners</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: F401  (re-exported: the historical home of these names)</span>
+    <span class="n">DFLT_PAGE_SIZE</span><span class="p">,</span>
+    <span class="n">ME</span><span class="p">,</span>
+    <span class="n">MIN_PAGE_SIZE</span><span class="p">,</span>
+    <span class="n">GraphQL</span><span class="p">,</span>
+    <span class="n">_paginate</span><span class="p">,</span>
+    <span class="n">expand_owners</span><span class="p">,</span>
+    <span class="n">gh_api</span><span class="p">,</span>
+    <span class="n">gh_graphql</span><span class="p">,</span>
+    <span class="n">is_excluded</span><span class="p">,</span>
+    <span class="n">my_owners</span><span class="p">,</span>
+    <span class="n">owner_nodes</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">DFLT_PAGE_SIZE</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="c1">#: On a gateway error (README blobs make pages slow), the page size is halved</span>
-<span class="c1">#: down to this before the error is let through.</span>
-<span class="n">MIN_PAGE_SIZE</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">_TRANSIENT</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"HTTP 502"</span><span class="p">,</span> <span class="s2">"HTTP 503"</span><span class="p">,</span> <span class="s2">"HTTP 504"</span><span class="p">,</span> <span class="s2">"timeout"</span><span class="p">,</span> <span class="s2">"Timeout"</span><span class="p">)</span>
 <span class="c1">#: README file names tried, in order, at the default branch's root.</span>
 <span class="n">README_NAMES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"README.md"</span><span class="p">,</span> <span class="s2">"readme.md"</span><span class="p">,</span> <span class="s2">"README.rst"</span><span class="p">,</span> <span class="s2">"README"</span><span class="p">,</span> <span class="s2">"README.txt"</span><span class="p">)</span>
 <span class="n">SEARCH_PREFIX</span> <span class="o">=</span> <span class="s2">"search:"</span>
-<span class="n">ME</span> <span class="o">=</span> <span class="s2">"@me"</span>
 
 <span class="n">_README_FIELDS</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
     <span class="sa">f</span><span class="s1">'readme</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">: object(expression: "HEAD:</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">") </span><span class="se">{{</span><span class="s1"> ... on Blob </span><span class="se">{{</span><span class="s1"> text </span><span class="se">}}</span><span class="s1"> </span><span class="se">}}</span><span class="s1">'</span>
@@ -749,17 +751,6 @@ window.runMermaid = runMermaid;</script>
 <span class="si">{</span><span class="n">_README_FIELDS</span><span class="si">}</span>
 <span class="s2">"""</span>
 
-<span class="n">OWNER_QUERY</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
-<span class="s2">query($owner: String!, $after: String, $n: Int!) </span><span class="se">{{</span>
-<span class="s2">  repositoryOwner(login: $owner) </span><span class="se">{{</span>
-<span class="s2">    repositories(first: $n, after: $after, ownerAffiliations: OWNER) </span><span class="se">{{</span>
-<span class="s2">      pageInfo </span><span class="se">{{</span><span class="s2"> hasNextPage endCursor </span><span class="se">}}</span>
-<span class="s2">      nodes </span><span class="se">{{</span><span class="s2"> </span><span class="si">{</span><span class="n">REPO_FIELDS</span><span class="si">}</span><span class="s2"> </span><span class="se">}}</span>
-<span class="s2">    </span><span class="se">}}</span>
-<span class="s2">  </span><span class="se">}}</span>
-<span class="se">}}</span>
-<span class="s2">"""</span>
-
 <span class="n">SEARCH_QUERY</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">query($q: String!, $after: String, $n: Int!) </span><span class="se">{{</span>
 <span class="s2">  search(type: REPOSITORY, query: $q, first: $n, after: $after) </span><span class="se">{{</span>
@@ -768,48 +759,6 @@ window.runMermaid = runMermaid;</script>
 <span class="s2">  </span><span class="se">}}</span>
 <span class="se">}}</span>
 <span class="s2">"""</span>
-
-
-<div class="viewcode-block" id="gh_graphql">
-<a class="viewcode-back" href="../../_autosummary/ghir.fetch.html#ghir.gh_graphql">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">gh_graphql</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Run a GraphQL query through ``gh api graphql`` and return its ``data``."""</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"gh"</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="s2">"ghir fetches through the GitHub CLI, which is not on PATH. "</span>
-            <span class="s2">"Install it (https://cli.github.com) and run `gh auth login`."</span>
-        <span class="p">)</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"gh"</span><span class="p">,</span> <span class="s2">"api"</span><span class="p">,</span> <span class="s2">"graphql"</span><span class="p">,</span> <span class="s2">"-f"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"query=</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"-F"</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"-f"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
-    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"gh api graphql failed: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"errors"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GitHub GraphQL errors: </span><span class="si">{</span><span class="n">payload</span><span class="p">[</span><span class="s1">'errors'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span></div>
-
-
-
-<div class="viewcode-block" id="gh_api">
-<a class="viewcode-back" href="../../_autosummary/ghir.fetch.html#ghir.gh_api">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">gh_api</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""``gh api &lt;path&gt;`` (REST), JSON-decoded."""</span>
-    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">"gh"</span><span class="p">,</span> <span class="s2">"api"</span><span class="p">,</span> <span class="n">path</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"gh api </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="my_owners">
-<a class="viewcode-back" href="../../_autosummary/ghir.fetch.html#ghir.my_owners">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">my_owners</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">rest</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">gh_api</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""The authenticated user's login followed by their organizations' logins."""</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">rest</span><span class="p">(</span><span class="s2">"user"</span><span class="p">)[</span><span class="s2">"login"</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="s2">"login"</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">rest</span><span class="p">(</span><span class="s2">"user/orgs"</span><span class="p">)]</span></div>
-
 
 
 <div class="viewcode-block" id="normalize_repo">
@@ -855,31 +804,6 @@ window.runMermaid = runMermaid;</script>
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_query_page</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">graphql</span><span class="p">:</span> <span class="n">GraphQL</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="s2">"n"</span><span class="p">]</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">graphql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">variables</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="n">n</span><span class="p">})</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">MIN_PAGE_SIZE</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_TRANSIENT</span><span class="p">):</span>
-                <span class="k">raise</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">MIN_PAGE_SIZE</span><span class="p">,</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_paginate</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">graphql</span><span class="p">:</span> <span class="n">GraphQL</span><span class="p">):</span>
-    <span class="n">after</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">_query_page</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">variables</span><span class="p">,</span> <span class="s2">"after"</span><span class="p">:</span> <span class="n">after</span><span class="p">},</span> <span class="n">graphql</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">):</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>  <span class="c1"># unknown owner, say</span>
-            <span class="k">return</span>
-        <span class="k">yield from</span> <span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">"nodes"</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"nameWithOwner"</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">"pageInfo"</span><span class="p">][</span><span class="s2">"hasNextPage"</span><span class="p">]:</span>
-            <span class="k">return</span>
-        <span class="n">after</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"pageInfo"</span><span class="p">][</span><span class="s2">"endCursor"</span><span class="p">]</span>
-
-
 <div class="viewcode-block" id="fetch_location">
 <a class="viewcode-back" href="../../_autosummary/ghir.fetch.html#ghir.fetch_location">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fetch_location</span><span class="p">(</span>
@@ -893,11 +817,8 @@ window.runMermaid = runMermaid;</script>
         <span class="n">q</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">SEARCH_PREFIX</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">_paginate</span><span class="p">(</span><span class="n">SEARCH_QUERY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"q"</span><span class="p">:</span> <span class="n">q</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="n">page_size</span><span class="p">},</span> <span class="s2">"search"</span><span class="p">,</span> <span class="n">graphql</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">nodes</span> <span class="o">=</span> <span class="n">_paginate</span><span class="p">(</span>
-            <span class="n">OWNER_QUERY</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">"owner"</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="n">page_size</span><span class="p">},</span>
-            <span class="s2">"repositoryOwner.repositories"</span><span class="p">,</span>
-            <span class="n">graphql</span><span class="p">,</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">owner_nodes</span><span class="p">(</span>
+            <span class="n">location</span><span class="p">,</span> <span class="n">graphql</span><span class="o">=</span><span class="n">graphql</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">REPO_FIELDS</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span>
         <span class="p">)</span>
     <span class="k">yield from</span> <span class="nb">map</span><span class="p">(</span><span class="n">normalize_repo</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span></div>
 
@@ -909,25 +830,7 @@ window.runMermaid = runMermaid;</script>
     <span class="n">locations</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">owners</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">my_owners</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Replace ``"@me"`` by the user's owners; keep order, drop duplicates."""</span>
-    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">owners</span><span class="p">()</span> <span class="k">if</span> <span class="n">loc</span> <span class="o">==</span> <span class="n">ME</span> <span class="k">else</span> <span class="p">[</span><span class="n">loc</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
-                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">out</span></div>
-
-
-
-<div class="viewcode-block" id="is_excluded">
-<a class="viewcode-back" href="../../_autosummary/ghir.fetch.html#ghir.is_excluded">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">is_excluded</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Whether ``owner/name`` matches any fnmatch pattern of ``exclude``.</span>
-
-<span class="sd">    &gt;&gt;&gt; is_excluded("Acme/x", ["acme/*"]), is_excluded("i2mint/x", ["acme/*"])</span>
-<span class="sd">    (True, False)</span>
-<span class="sd">    """</span>
-    <span class="n">rid</span> <span class="o">=</span> <span class="n">repo_id</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">expand_owners</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">me</span><span class="o">=</span><span class="n">owners</span><span class="p">)</span></div>
 
 
 

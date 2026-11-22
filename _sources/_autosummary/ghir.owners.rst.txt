@@ -1,0 +1,26 @@
+ghir.owners
+===========
+
+.. automodule:: ghir.owners
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      MIN_PAGE_SIZE
+      DFLT_FIELDS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      expand_owners
+      gh_api
+      gh_graphql
+      is_excluded
+      list_repos
+      my_owners
+      owner_nodes
+      urllib_graphql
+   

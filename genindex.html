@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/documentation_options.js?v=8c5712d9"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.3" />
+  <meta name="docsearch:version" content="0.0.4" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -685,6 +685,7 @@ window.runMermaid = runMermaid;</script>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  
 </div>
 <h2 id="D">D</h2>
@@ -696,11 +697,13 @@ window.runMermaid = runMermaid;</script>
 </li>
       <li><a href="_autosummary/ghir.config.html#ghir.config.DFLT_CACHE_DIR">DFLT_CACHE_DIR (in module ghir.config)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.config.html#ghir.config.DFLT_CONFIG_PATH">DFLT_CONFIG_PATH (in module ghir.config)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.config.html#ghir.config.DFLT_CORPUS_NAME">DFLT_CORPUS_NAME (in module ghir.config)</a>
+</li>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.DFLT_FIELDS">DFLT_FIELDS (in module ghir.owners)</a>
 </li>
       <li><a href="_autosummary/ghir.local.html#ghir.local.DFLT_MAX_DEPTH">DFLT_MAX_DEPTH (in module ghir.local)</a>
 </li>
@@ -714,11 +717,13 @@ window.runMermaid = runMermaid;</script>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.local.html#ghir.local.excluded_clones">excluded_clones() (in module ghir.local)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.cache.html#ghir.cache.excluded_ids">excluded_ids() (in module ghir.cache)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.fetch.html#ghir.fetch.expand_locations">expand_locations() (in module ghir.fetch)</a>
+</li>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.expand_owners">expand_owners() (in module ghir.owners)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -742,9 +747,9 @@ window.runMermaid = runMermaid;</script>
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/ghir.fetch.html#ghir.fetch.gh_api">gh_api() (in module ghir.fetch)</a>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.gh_api">gh_api() (in module ghir.owners)</a>
 </li>
-      <li><a href="_autosummary/ghir.fetch.html#ghir.fetch.gh_graphql">gh_graphql() (in module ghir.fetch)</a>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.gh_graphql">gh_graphql() (in module ghir.owners)</a>
 </li>
       <li>
     ghir
@@ -790,6 +795,13 @@ window.runMermaid = runMermaid;</script>
         <li><a href="_autosummary/ghir.local.html#module-ghir.local">module</a>
 </li>
       </ul></li>
+      <li>
+    ghir.owners
+
+      <ul>
+        <li><a href="_autosummary/ghir.owners.html#module-ghir.owners">module</a>
+</li>
+      </ul></li>
       <li><a href="_autosummary/ghir.html#ghir.grep_rank">grep_rank() (in module ghir)</a>
 </li>
   </ul></td>
@@ -804,13 +816,17 @@ window.runMermaid = runMermaid;</script>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.html#ghir.ir_rank">ir_rank() (in module ghir)</a>
 </li>
-      <li><a href="_autosummary/ghir.fetch.html#ghir.fetch.is_excluded">is_excluded() (in module ghir.fetch)</a>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.is_excluded">is_excluded() (in module ghir.owners)</a>
 </li>
   </ul></td>
 </tr></table>
 
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.list_repos">list_repos() (in module ghir.owners)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.html#ghir.local_clones">local_clones() (in module ghir)</a>
 
@@ -824,7 +840,7 @@ window.runMermaid = runMermaid;</script>
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/ghir.fetch.html#ghir.fetch.MIN_PAGE_SIZE">MIN_PAGE_SIZE (in module ghir.fetch)</a>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.MIN_PAGE_SIZE">MIN_PAGE_SIZE (in module ghir.owners)</a>
 </li>
       <li>
     module
@@ -842,10 +858,12 @@ window.runMermaid = runMermaid;</script>
 </li>
         <li><a href="_autosummary/ghir.local.html#module-ghir.local">ghir.local</a>
 </li>
+        <li><a href="_autosummary/ghir.owners.html#module-ghir.owners">ghir.owners</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/ghir.fetch.html#ghir.fetch.my_owners">my_owners() (in module ghir.fetch)</a>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.my_owners">my_owners() (in module ghir.owners)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -862,6 +880,10 @@ window.runMermaid = runMermaid;</script>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/ghir.local.html#ghir.local.origin_repo_id">origin_repo_id() (in module ghir.local)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.owner_nodes">owner_nodes() (in module ghir.owners)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -899,7 +921,7 @@ window.runMermaid = runMermaid;</script>
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/ghir.html#ghir.search">search() (in module ghir)</a>
+      <li><a href="_autosummary/ghir.search.html#ghir.search">search() (in module ghir)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -909,6 +931,14 @@ window.runMermaid = runMermaid;</script>
         <li><a href="_autosummary/ghir.config.html#ghir.config.settings">(in module ghir.config)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/ghir.owners.html#ghir.owners.urllib_graphql">urllib_graphql() (in module ghir.owners)</a>
+</li>
   </ul></td>
 </tr></table>
 

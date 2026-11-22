@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=47de8214"></script>
+    <script src="../_static/documentation_options.js?v=8c5712d9"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,12 +53,12 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ghir.cache" href="ghir.cache.html" />
+    <link rel="next" title="ghir.search" href="ghir.search.html" />
     <link rel="prev" title="API reference" href="../api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.3" />
+  <meta name="docsearch:version" content="0.0.4" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -306,11 +306,13 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">ghir</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ghir.search.html">ghir.search</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ghir.cache.html">ghir.cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ghir.config.html">ghir.config</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ghir.extract.html">ghir.extract</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ghir.fetch.html">ghir.fetch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ghir.local.html">ghir.local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ghir.owners.html">ghir.owners</a></li>
 </ul>
 </details></li>
 </ul>
@@ -384,7 +386,7 @@ or <code class="docutils literal notranslate"><span class="pre">&quot;search:&lt
 description + topics + README head (<a class="reference internal" href="ghir.extract.html#module-ghir.extract" title="ghir.extract"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ghir.extract</span></code></a>).</p></li>
 <li><p><strong>ranking</strong> (<code class="docutils literal notranslate"><span class="pre">rank=</span></code>): <code class="docutils literal notranslate"><span class="pre">&quot;ir&quot;</span></code> (default, hybrid dense + BM25) or <code class="docutils literal notranslate"><span class="pre">&quot;grep&quot;</span></code>.</p></li>
 <li><p><strong>cache</strong> (<code class="docutils literal notranslate"><span class="pre">store=</span></code>): a <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code>; <a class="reference internal" href="#ghir.refresh" title="ghir.refresh"><code class="xref py py-func docutils literal notranslate"><span class="pre">refresh()</span></code></a> merges into it,
-<a class="reference internal" href="#ghir.search" title="ghir.search"><code class="xref py py-func docutils literal notranslate"><span class="pre">search()</span></code></a> only reads it (offline).</p></li>
+<a class="reference internal" href="ghir.search.html#ghir.search" title="ghir.search"><code class="xref py py-func docutils literal notranslate"><span class="pre">search()</span></code></a> only reads it (offline).</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">ghir</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ghir</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
@@ -419,10 +421,7 @@ description + topics + README head (<a class="reference internal" href="ghir.ext
 <tr class="row-even"><td><p><a class="reference internal" href="#ghir.repo_store" title="ghir.repo_store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repo_store</span></code></a>([cache_dir])</p></td>
 <td><p>The default cache: <code class="docutils literal notranslate"><span class="pre">{&quot;owner/name&quot;:</span> <span class="pre">record}</span></code> over JSON files.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.search" title="ghir.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a>(query, *[, k, rank, extract, store, ...])</p></td>
-<td><p>Rank cached repos for <code class="docutils literal notranslate"><span class="pre">query</span></code>; each hit says where it is cloned, if anywhere.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ghir.settings" title="ghir.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a>([path])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ghir.settings" title="ghir.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a>([path])</p></td>
 <td><p>The effective settings: defaults, then the config file, then <code class="docutils literal notranslate"><span class="pre">overrides</span></code>.</p></td>
 </tr>
 </tbody>
@@ -555,18 +554,6 @@ because they are now excluded (by <code class="docutils literal notranslate"><sp
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ghir.search">
-<span class="sig-prename descclassname"><span class="pre">ghir.</span></span><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_roots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_forks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_archived</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">rank_kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ghir/search.html#search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ghir.search" title="Link to this definition">#</a></dt>
-<dd><p>Rank cached repos for <code class="docutils literal notranslate"><span class="pre">query</span></code>; each hit says where it is cloned, if anywhere.</p>
-<p>Offline: reads the cache filled by <a class="reference internal" href="ghir.cache.html#ghir.cache.refresh" title="ghir.cache.refresh"><code class="xref py py-func docutils literal notranslate"><span class="pre">ghir.cache.refresh()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="#ghir.RepoHit" title="ghir.search.RepoHit"><code class="xref py py-class docutils literal notranslate"><span class="pre">RepoHit</span></code></a>]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="ghir.settings">
 <span class="sig-prename descclassname"><span class="pre">ghir.</span></span><span class="sig-name descname"><span class="pre">settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">overrides</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ghir/config.html#settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ghir.settings" title="Link to this definition">#</a></dt>
 <dd><p>The effective settings: defaults, then the config file, then <code class="docutils literal notranslate"><span class="pre">overrides</span></code>.</p>
@@ -585,20 +572,26 @@ because they are now excluded (by <code class="docutils literal notranslate"><sp
 <p class="rubric">Modules</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="ghir.cache.html#module-ghir.cache" title="ghir.cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ghir.search.html#ghir.search" title="ghir.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a></p></td>
+<td><p>Ranking cached repos against a query, and marking which ones are cloned here.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ghir.cache.html#module-ghir.cache" title="ghir.cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></a></p></td>
 <td><p>The repo-record cache: a <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> from <code class="docutils literal notranslate"><span class="pre">owner/name</span></code> to a record.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ghir.config.html#module-ghir.config" title="ghir.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ghir.config.html#module-ghir.config" title="ghir.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code></a></p></td>
 <td><p>Settings for ghir: where the cache lives and which repos are in scope.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ghir.extract.html#module-ghir.extract" title="ghir.extract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ghir.extract.html#module-ghir.extract" title="ghir.extract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract</span></code></a></p></td>
 <td><p>Extraction: what text each cached repo contributes to the search.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ghir.fetch.html#module-ghir.fetch" title="ghir.fetch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ghir.fetch.html#module-ghir.fetch" title="ghir.fetch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch</span></code></a></p></td>
 <td><p>Fetching repo records from GitHub, through the <code class="docutils literal notranslate"><span class="pre">gh</span></code> CLI's GraphQL access.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ghir.local.html#module-ghir.local" title="ghir.local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ghir.local.html#module-ghir.local" title="ghir.local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local</span></code></a></p></td>
 <td><p>Which GitHub repos are cloned on this machine, and where.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ghir.owners.html#module-ghir.owners" title="ghir.owners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">owners</span></code></a></p></td>
+<td><p>Owner logins -&gt; repo records, stdlib only (no <code class="docutils literal notranslate"><span class="pre">ir</span></code>, no <code class="docutils literal notranslate"><span class="pre">dol</span></code>).</p></td>
 </tr>
 </tbody>
 </table>
@@ -625,11 +618,11 @@ because they are now excluded (by <code class="docutils literal notranslate"><sp
       </div>
     </a>
     <a class="right-next"
-       href="ghir.cache.html"
+       href="ghir.search.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ghir.cache</p>
+        <p class="prev-next-title">ghir.search</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -661,7 +654,6 @@ because they are now excluded (by <code class="docutils literal notranslate"><sp
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.refresh"><code class="docutils literal notranslate"><span class="pre">refresh()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.register_corpus"><code class="docutils literal notranslate"><span class="pre">register_corpus()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.repo_store"><code class="docutils literal notranslate"><span class="pre">repo_store()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.search"><code class="docutils literal notranslate"><span class="pre">search()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ghir.settings"><code class="docutils literal notranslate"><span class="pre">settings()</span></code></a></li>
 </ul>
   </nav></div>

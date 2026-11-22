@@ -8,7 +8,6 @@ ghir.fetch
 
    .. autosummary::
    
-      MIN_PAGE_SIZE
       README_NAMES
    
    .. rubric:: Functions
@@ -18,9 +17,5 @@ ghir.fetch
       expand_locations
       fetch_location
       fetch_repos
-      gh_api
-      gh_graphql
-      is_excluded
-      my_owners
       normalize_repo
    

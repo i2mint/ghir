@@ -1,4 +1,4 @@
-> built 2026-11-21 17:45 UTC from b4c58ef (main) · ghir 0.0.3. Details: build_info.json
+> built 2026-11-22 11:53 UTC from fb680d5 (main) · ghir 0.0.4. Details: build_info.json
 
 # index.html.md
 
@@ -136,7 +136,7 @@ for machine-specific choices (extra owners, owners or repos never to fetch):
 ```
 
 `"@me"` expands to the authenticated GitHub user plus every organization they
-belong to (see [`ghir.fetch.my_owners()`](_autosummary/ghir.fetch.html.md#ghir.fetch.my_owners)).
+belong to (see `ghir.fetch.my_owners()`).
 
 ### Module Attributes
 
@@ -261,26 +261,16 @@ A *location* is one of:
 
 ### Module Attributes
 
-| [`MIN_PAGE_SIZE`](_autosummary/ghir.fetch.html.md#ghir.fetch.MIN_PAGE_SIZE)   | On a gateway error (README blobs make pages slow), the page size is halved down to this before the error is let through.   |
-|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| [`README_NAMES`](_autosummary/ghir.fetch.html.md#ghir.fetch.README_NAMES)    | README file names tried, in order, at the default branch's root.                                                           |
+| [`README_NAMES`](_autosummary/ghir.fetch.html.md#ghir.fetch.README_NAMES)   | README file names tried, in order, at the default branch's root.   |
+|-----------------------------------------------------------------|--------------------------------------------------------------------|
 
 ### Functions
 
-| [`expand_locations`](_autosummary/ghir.fetch.html.md#ghir.fetch.expand_locations)(locations, \*[, owners])          | Replace `"@me"` by the user's owners; keep order, drop duplicates.      |
-|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| [`fetch_location`](_autosummary/ghir.fetch.html.md#ghir.fetch.fetch_location)(location, \*[, graphql, page_size]) | Yield normalized repo records for one owner login or `search:` spec.    |
-| [`fetch_repos`](_autosummary/ghir.fetch.html.md#ghir.fetch.fetch_repos)(locations, \*[, exclude, ...])         | Yield repo records over all `locations`, skipping excluded repos.       |
-| [`gh_api`](_autosummary/ghir.fetch.html.md#ghir.fetch.gh_api)(path)                                       | `gh api <path>` (REST), JSON-decoded.                                   |
-| [`gh_graphql`](_autosummary/ghir.fetch.html.md#ghir.fetch.gh_graphql)(query, variables)                       | Run a GraphQL query through `gh api graphql` and return its `data`.     |
-| [`is_excluded`](_autosummary/ghir.fetch.html.md#ghir.fetch.is_excluded)(repo_id, exclude)                      | Whether `owner/name` matches any fnmatch pattern of `exclude`.          |
-| [`my_owners`](_autosummary/ghir.fetch.html.md#ghir.fetch.my_owners)(\*[, rest])                              | The authenticated user's login followed by their organizations' logins. |
-| [`normalize_repo`](_autosummary/ghir.fetch.html.md#ghir.fetch.normalize_repo)(node)                               | Flatten one GraphQL repository node into a JSON-friendly record.        |
-
-### ghir.fetch.MIN_PAGE_SIZE *= 3*
-
-On a gateway error (README blobs make pages slow), the page size is halved
-down to this before the error is let through.
+| [`expand_locations`](_autosummary/ghir.fetch.html.md#ghir.fetch.expand_locations)(locations, \*[, owners])          | Replace `"@me"` by the user's owners; keep order, drop duplicates.   |
+|-----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| [`fetch_location`](_autosummary/ghir.fetch.html.md#ghir.fetch.fetch_location)(location, \*[, graphql, page_size]) | Yield normalized repo records for one owner login or `search:` spec. |
+| [`fetch_repos`](_autosummary/ghir.fetch.html.md#ghir.fetch.fetch_repos)(locations, \*[, exclude, ...])         | Yield repo records over all `locations`, skipping excluded repos.    |
+| [`normalize_repo`](_autosummary/ghir.fetch.html.md#ghir.fetch.normalize_repo)(node)                               | Flatten one GraphQL repository node into a JSON-friendly record.     |
 
 ### ghir.fetch.README_NAMES *= ('README.md', 'readme.md', 'README.rst', 'README', 'README.txt')*
 
@@ -313,39 +303,6 @@ being queried at all, so nothing of it is fetched.
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
-### ghir.fetch.gh_api(path)
-
-`gh api <path>` (REST), JSON-decoded.
-
-* **Return type:**
-  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
-
-### ghir.fetch.gh_graphql(query, variables)
-
-Run a GraphQL query through `gh api graphql` and return its `data`.
-
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
-### ghir.fetch.is_excluded(repo_id, exclude)
-
-Whether `owner/name` matches any fnmatch pattern of `exclude`.
-
-```pycon
->>> is_excluded("Acme/x", ["acme/*"]), is_excluded("i2mint/x", ["acme/*"])
-(True, False)
-```
-
-* **Return type:**
-  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
-
-### ghir.fetch.my_owners(\*, rest=<function gh_api>)
-
-The authenticated user’s login followed by their organizations’ logins.
-
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
-
 ### ghir.fetch.normalize_repo(node)
 
 Flatten one GraphQL repository node into a JSON-friendly record.
@@ -376,7 +333,7 @@ Four seams, each a keyword argument with a working default:
   description + topics + README head ([`ghir.extract`](_autosummary/ghir.extract.html.md#module-ghir.extract)).
 - **ranking** (`rank=`): `"ir"` (default, hybrid dense + BM25) or `"grep"`.
 - **cache** (`store=`): a `MutableMapping`; [`refresh()`](_autosummary/ghir.html.md#ghir.refresh) merges into it,
-  [`search()`](_autosummary/ghir.html.md#ghir.search) only reads it (offline).
+  [`search()`](_autosummary/ghir.search.html.md#ghir.search) only reads it (offline).
 
 ```pycon
 >>> import ghir
@@ -387,17 +344,17 @@ Four seams, each a keyword argument with a working default:
 
 ### Functions
 
-| [`fetch_repos`](_autosummary/ghir.html.md#ghir.fetch_repos)(locations, \*[, exclude, ...])         | Yield repo records over all `locations`, skipping excluded repos.             |
-|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| [`grep_rank`](_autosummary/ghir.html.md#ghir.grep_rank)(query, docs, \*[, k])                    | Fraction of query terms (as word prefixes) found in each repo's text.         |
-| [`ir_rank`](_autosummary/ghir.html.md#ghir.ir_rank)(query, docs, \*[, k, mode, embedder, ...]) | Rank with `ir`: build (incrementally) then `ir.search`.                       |
-| [`local_clones`](_autosummary/ghir.html.md#ghir.local_clones)(roots, \*[, max_depth])               | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.          |
-| [`records`](_autosummary/ghir.html.md#ghir.records)()                                          | The default records, as a zero-argument fetcher for ir's registry.            |
-| [`refresh`](_autosummary/ghir.html.md#ghir.refresh)([locations, store, exclude, fetch])        | Fetch the repos of `locations` and merge them into the cache.                 |
-| [`register_corpus`](_autosummary/ghir.html.md#ghir.register_corpus)([name])                            | Register the cache as an ir corpus, so `ir discover <name> ...` works.        |
-| [`repo_store`](_autosummary/ghir.html.md#ghir.repo_store)([cache_dir])                            | The default cache: `{"owner/name": record}` over JSON files.                  |
-| [`search`](_autosummary/ghir.html.md#ghir.search)(query, \*[, k, rank, extract, store, ...])  | Rank cached repos for `query`; each hit says where it is cloned, if anywhere. |
-| [`settings`](_autosummary/ghir.html.md#ghir.settings)([path])                                   | The effective settings: defaults, then the config file, then `overrides`.     |
+| [`fetch_repos`](_autosummary/ghir.html.md#ghir.fetch_repos)(locations, \*[, exclude, ...])                    | Yield repo records over all `locations`, skipping excluded repos.             |
+|----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [`grep_rank`](_autosummary/ghir.html.md#ghir.grep_rank)(query, docs, \*[, k])                               | Fraction of query terms (as word prefixes) found in each repo's text.         |
+| [`ir_rank`](_autosummary/ghir.html.md#ghir.ir_rank)(query, docs, \*[, k, mode, embedder, ...])            | Rank with `ir`: build (incrementally) then `ir.search`.                       |
+| [`local_clones`](_autosummary/ghir.html.md#ghir.local_clones)(roots, \*[, max_depth])                          | `{"owner/name" (lowercased): path}` for git checkouts under `roots`.          |
+| [`records`](_autosummary/ghir.html.md#ghir.records)()                                                     | The default records, as a zero-argument fetcher for ir's registry.            |
+| [`refresh`](_autosummary/ghir.html.md#ghir.refresh)([locations, store, exclude, fetch])                   | Fetch the repos of `locations` and merge them into the cache.                 |
+| [`register_corpus`](_autosummary/ghir.html.md#ghir.register_corpus)([name])                                       | Register the cache as an ir corpus, so `ir discover <name> ...` works.        |
+| [`repo_store`](_autosummary/ghir.html.md#ghir.repo_store)([cache_dir])                                       | The default cache: `{"owner/name": record}` over JSON files.                  |
+| [`search`](_autosummary/ghir.search.html.md#ghir.search)(query, \*[, k, rank, extract, store, ...]) | Rank cached repos for `query`; each hit says where it is cloned, if anywhere. |
+| [`settings`](_autosummary/ghir.html.md#ghir.settings)([path])                                              | The effective settings: defaults, then the config file, then `overrides`.     |
 
 ### Classes
 
@@ -522,6 +479,7 @@ The effective settings: defaults, then the config file, then `overrides`.
 | [`extract`](_autosummary/ghir.extract.html.md#module-ghir.extract) | Extraction: what text each cached repo contributes to the search.          |
 | [`fetch`](_autosummary/ghir.fetch.html.md#module-ghir.fetch)     | Fetching repo records from GitHub, through the `gh` CLI's GraphQL access.  |
 | [`local`](_autosummary/ghir.local.html.md#module-ghir.local)     | Which GitHub repos are cloned on this machine, and where.                  |
+| [`owners`](_autosummary/ghir.owners.html.md#module-ghir.owners)   | Owner logins -> repo records, stdlib only (no `ir`, no `dol`).             |
 
 
 # _autosummary/ghir.local.html.md
@@ -584,24 +542,160 @@ The `owner/name` of the first GitHub remote in a `.git/config`.
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
+# _autosummary/ghir.owners.html.md
+
+# ghir.owners
+
+Owner logins -> repo records, stdlib only (no `ir`, no `dol`).
+
+The reusable half of [`ghir.fetch`](_autosummary/ghir.fetch.html.md#module-ghir.fetch): a GraphQL transport seam (`graphql=`,
+a callable `(query, variables) -> dict`; [`gh_graphql()`](_autosummary/ghir.owners.html.md#ghir.owners.gh_graphql) shells out to the
+`gh` CLI, [`urllib_graphql()`](_autosummary/ghir.owners.html.md#ghir.owners.urllib_graphql) needs only a token), `"@me"` expansion,
+fnmatch exclusion and cursor pagination that backs off the page size on gateway
+errors. What a record *contains* is a seam too: `fields` is the GraphQL
+selection and `normalize` flattens a node, so ghir asks for README blobs while
+another collector asks for permissions and fork counts.
+
+```pycon
+>>> expand_owners(["@me", "acme", "bob"], me=lambda: ["bob", "org1"])
+['bob', 'org1', 'acme']
+>>> is_excluded("Acme/x", ["acme/*"]), is_excluded("bob/x", ["acme/*"])
+(True, False)
+>>> def fake(query, variables):
+...     return {"repositoryOwner": {"repositories": {
+...         "pageInfo": {"hasNextPage": False, "endCursor": None},
+...         "nodes": [{"nameWithOwner": "acme/x"}, {"nameWithOwner": "acme/y"}]}}}
+>>> [r["nameWithOwner"] for r in list_repos(["acme"], graphql=fake, exclude=["acme/y"])]
+['acme/x']
+```
+
+### Module Attributes
+
+| [`MIN_PAGE_SIZE`](_autosummary/ghir.owners.html.md#ghir.owners.MIN_PAGE_SIZE)   | On a gateway error, the page size is halved down to this before the error is let through.   |
+|------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| [`DFLT_FIELDS`](_autosummary/ghir.owners.html.md#ghir.owners.DFLT_FIELDS)     | The least a repo listing needs; pass a richer `fields=` selection to ask for more.          |
+
+### Functions
+
+| [`expand_owners`](_autosummary/ghir.owners.html.md#ghir.owners.expand_owners)(owners, \*, me)                  | Replace `"@me"` by the user's owners; keep order, drop case-insensitive duplicates.   |
+|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| [`gh_api`](_autosummary/ghir.owners.html.md#ghir.owners.gh_api)(path)                                   | `gh api <path>` (REST), JSON-decoded.                                                 |
+| [`gh_graphql`](_autosummary/ghir.owners.html.md#ghir.owners.gh_graphql)(query, variables)                   | Run a GraphQL query through `gh api graphql` and return its `data`.                   |
+| [`is_excluded`](_autosummary/ghir.owners.html.md#ghir.owners.is_excluded)(repo_id, exclude)                  | Whether `owner/name` matches any fnmatch pattern of `exclude`.                        |
+| [`list_repos`](_autosummary/ghir.owners.html.md#ghir.owners.list_repos)(owners, \*[, graphql, fields, ...]) | Yield a record per repo over `owners` (`"@me"` expanded), minus `exclude`.            |
+| [`my_owners`](_autosummary/ghir.owners.html.md#ghir.owners.my_owners)(\*[, rest])                          | The authenticated user's login followed by their organizations' logins.               |
+| [`owner_nodes`](_autosummary/ghir.owners.html.md#ghir.owners.owner_nodes)(owner, \*[, graphql, fields, ...]) | Yield the raw GraphQL nodes of every repo owned by `owner` (`fields` selects them).   |
+| [`urllib_graphql`](_autosummary/ghir.owners.html.md#ghir.owners.urllib_graphql)([token, url, timeout])          | A GraphQL transport over `urllib` and a token (default `$GITHUB_TOKEN`/`$GH_TOKEN`).  |
+
+### ghir.owners.DFLT_FIELDS *= 'nameWithOwner name description url isFork isArchived isPrivate'*
+
+The least a repo listing needs; pass a richer `fields=` selection to ask for more.
+
+### ghir.owners.MIN_PAGE_SIZE *= 3*
+
+On a gateway error, the page size is halved down to this before the error is let through.
+
+### ghir.owners.expand_owners(owners, , me)
+
+Replace `"@me"` by the user’s owners; keep order, drop case-insensitive duplicates.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### ghir.owners.gh_api(path)
+
+`gh api <path>` (REST), JSON-decoded.
+
+* **Return type:**
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+### ghir.owners.gh_graphql(query, variables)
+
+Run a GraphQL query through `gh api graphql` and return its `data`.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### ghir.owners.is_excluded(repo_id, exclude)
+
+Whether `owner/name` matches any fnmatch pattern of `exclude`.
+
+```pycon
+>>> is_excluded("Acme/x", ["acme/*"]), is_excluded("i2mint/x", ["acme/*"])
+(True, False)
+```
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
+### ghir.owners.list_repos(owners, \*, graphql=<function gh_graphql>, fields='nameWithOwner name description url isFork isArchived isPrivate', normalize=None, exclude=(), me=<function my_owners>, page_size=25, on_error=None)
+
+Yield a record per repo over `owners` (`"@me"` expanded), minus `exclude`.
+
+`normalize` maps a node to the record (default: the node itself). An owner
+pattern in `exclude` (`"acme/*"`) also stops that owner being queried. An
+owner whose listing fails goes to `on_error(owner, error)` and is skipped,
+or, when `on_error` is None, the error propagates.
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]
+
+### ghir.owners.my_owners(\*, rest=<function gh_api>)
+
+The authenticated user’s login followed by their organizations’ logins.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### ghir.owners.owner_nodes(owner, \*, graphql=<function gh_graphql>, fields='nameWithOwner name description url isFork isArchived isPrivate', page_size=25)
+
+Yield the raw GraphQL nodes of every repo owned by `owner` (`fields` selects them).
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+### ghir.owners.urllib_graphql(token=None, , url='https://api.github.com/graphql', timeout=60)
+
+A GraphQL transport over `urllib` and a token (default `$GITHUB_TOKEN`/`$GH_TOKEN`).
+
+For environments without the `gh` CLI (a GitHub Action, a container).
+
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]], [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+
+# _autosummary/ghir.search.html.md
+
+# ghir.search
+
+### ghir.search(query, , k=20, rank='ir', extract=None, store=None, local_roots=None, include_forks=True, include_archived=True, \*\*rank_kw)
+
+Rank cached repos for `query`; each hit says where it is cloned, if anywhere.
+
+Offline: reads the cache filled by [`ghir.cache.refresh()`](_autosummary/ghir.cache.html.md#ghir.cache.refresh).
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`RepoHit`](_autosummary/ghir.html.md#ghir.RepoHit)]
+
+
 # about-this-build.html.md
 
 <!-- generated by epythet -->
 
 # About this build
 
-This documentation was built on **2026-11-21 17:45 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d"><code>b4c58ef</code></a> on branch <code>main</code>, for **ghir 0.0.3** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 11:53 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02"><code>fb680d5</code></a> on branch <code>main</code>, for **ghir 0.0.4** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.3) is behind the latest release on PyPI (0.0.4): `pip install ghir` gives newer code than these docs describe.
+- The documented version (0.0.4) is behind the latest release on PyPI (0.0.5): `pip install ghir` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                    |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d"><code>b4c58ef5512028d63126be57f2e35945901c6f7d</code></a> |
+| Commit              | <a href="https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02"><code>fb680d520a3390845433b3969ab1bbdc5cc6ba02</code></a> |
 | Branch              | <code>main</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                               |
 | Working tree        | clean                                                                                                                                              |
@@ -612,9 +706,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/ghir</code>                                                                   |
-| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/44931630355">44931630355</a>          |
+| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/45019386562">45019386562</a>          |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>b4c58ef5512028d63126be57f2e35945901c6f7d</code> (in the history of the built commit) |
+| Event commit | <code>fb680d520a3390845433b3969ab1bbdc5cc6ba02</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -639,13 +733,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ghir/0.0.4/">0.0.4</a>, newer than the documented version (0.0.3).
+Latest release: <a href="https://pypi.org/project/ghir/0.0.5/">0.0.5</a>, newer than the documented version (0.0.4).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/ghir && cd ghir
-git checkout b4c58ef5512028d63126be57f2e35945901c6f7d
+git checkout fb680d520a3390845433b3969ab1bbdc5cc6ba02
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

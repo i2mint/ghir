@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-21T17:45:12Z",
+  "built_at": "2026-11-22T11:53:13Z",
   "package": {
     "name": "ghir",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "display_name": "ghir",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "b4c58ef5512028d63126be57f2e35945901c6f7d",
-    "short_commit": "b4c58ef",
+    "commit": "fb680d520a3390845433b3969ab1bbdc5cc6ba02",
+    "short_commit": "fb680d5",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/ghir",
-    "commit_url": "https://github.com/i2mint/ghir/commit/b4c58ef5512028d63126be57f2e35945901c6f7d",
+    "commit_url": "https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/ghir",
-    "sha": "b4c58ef5512028d63126be57f2e35945901c6f7d",
+    "sha": "fb680d520a3390845433b3969ab1bbdc5cc6ba02",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "44931630355",
-    "run_url": "https://github.com/i2mint/ghir/actions/runs/44931630355",
+    "run_id": "45019386562",
+    "run_url": "https://github.com/i2mint/ghir/actions/runs/45019386562",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -55,21 +55,21 @@
     "docs_dir": "docsrc"
   },
   "site": {
-    "modules_documented": 6,
-    "objects_documented": 38
+    "modules_documented": 8,
+    "objects_documented": 43
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.4",
+    "latest": "0.0.5",
     "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/ghir && cd ghir\ngit checkout b4c58ef5512028d63126be57f2e35945901c6f7d\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/ghir && cd ghir\ngit checkout fb680d520a3390845433b3969ab1bbdc5cc6ba02\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": false,
     "notes": [
-      "The documented version (0.0.3) is behind the latest release on PyPI (0.0.4): `pip install ghir` gives newer code than these docs describe."
+      "The documented version (0.0.4) is behind the latest release on PyPI (0.0.5): `pip install ghir` gives newer code than these docs describe."
     ]
   }
 }

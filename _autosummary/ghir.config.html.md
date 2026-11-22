@@ -13,7 +13,7 @@ for machine-specific choices (extra owners, owners or repos never to fetch):
 ```
 
 `"@me"` expands to the authenticated GitHub user plus every organization they
-belong to (see [`ghir.fetch.my_owners()`](ghir.fetch.html.md#ghir.fetch.my_owners)).
+belong to (see `ghir.fetch.my_owners()`).
 
 ### Module Attributes
 

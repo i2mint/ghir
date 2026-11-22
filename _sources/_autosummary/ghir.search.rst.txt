@@ -1,0 +1,6 @@
+﻿ghir.search
+===========
+
+.. currentmodule:: ghir
+
+.. autofunction:: search
