@@ -169,6 +169,22 @@ def is_excluded(repo_id: str, exclude: Iterable[str]) -> bool:
     return any(fnmatch(rid, p.lower()) for p in exclude)
 
 
+def owner_is_excluded(owner: str, exclude: Iterable[str]) -> bool:
+    """Whether some pattern of ``exclude`` matches *every* repo of ``owner``.
+
+    Only a pattern ending in ``*`` whose head matches ``"<owner>/"`` does
+    (``"acme/*"``, ``"*/*"``); ``"acme/?"`` or ``"acme/[!l]*"`` exclude only
+    some of acme's repos, so acme must still be listed.
+
+    >>> owner_is_excluded("Acme", ["acme/*"]), owner_is_excluded("acme", ["acme/?"])
+    (True, False)
+    """
+    prefix = f"{owner}/".lower()
+    return any(
+        p.endswith("*") and fnmatch(prefix, p.rstrip("*").lower()) for p in exclude
+    )
+
+
 def owner_nodes(
     owner: str,
     *,
@@ -205,7 +221,7 @@ def list_repos(
     """
     exclude = list(exclude)
     for owner in expand_owners(owners, me=me):
-        if is_excluded(f"{owner}/*", exclude):
+        if owner_is_excluded(owner, exclude):
             continue
         try:
             for node in owner_nodes(
