@@ -1,5 +1,7 @@
 """Hermetic tests: a fake GraphQL transport, a dict cache, the light embedder."""
 
+import json
+
 import pytest
 
 from ghir.cache import refresh
@@ -180,8 +182,9 @@ def test_local_exclude_skips_purges_and_hides(tmp_path, monkeypatch):
     clone = tmp_path / "src" / "q" / "cards" / ".git"
     clone.mkdir(parents=True)
     (clone / "config").write_text("url = git@github.com:acme/cards.git\n")
+    # json.dumps, not %s: a Windows path's backslashes are invalid JSON escapes
     cfg.write_text(
-        '{"local_exclude": ["q/*"], "local_roots": ["%s"]}' % (tmp_path / "src")
+        json.dumps({"local_exclude": ["q/*"], "local_roots": [str(tmp_path / "src")]})
     )
     monkeypatch.setenv("GHIR_CONFIG", str(cfg))
     store = {"acme/cards": {"id": "acme/cards", "description": "stale copy"}}
