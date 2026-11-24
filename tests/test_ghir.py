@@ -1,5 +1,7 @@
 """Hermetic tests: a fake GraphQL transport, a dict cache, the light embedder."""
 
+import json
+
 import pytest
 
 from ghir.cache import refresh
@@ -180,8 +182,9 @@ def test_local_exclude_skips_purges_and_hides(tmp_path, monkeypatch):
     clone = tmp_path / "src" / "q" / "cards" / ".git"
     clone.mkdir(parents=True)
     (clone / "config").write_text("url = git@github.com:acme/cards.git\n")
+    # json.dumps, not %s: a Windows path's backslashes are invalid JSON escapes
     cfg.write_text(
-        '{"local_exclude": ["q/*"], "local_roots": ["%s"]}' % (tmp_path / "src")
+        json.dumps({"local_exclude": ["q/*"], "local_roots": [str(tmp_path / "src")]})
     )
     monkeypatch.setenv("GHIR_CONFIG", str(cfg))
     store = {"acme/cards": {"id": "acme/cards", "description": "stale copy"}}
@@ -208,3 +211,32 @@ def test_owners_module_is_light_and_fields_are_a_seam():
         "assert r==['WRITE'] and 'viewerPermission' in seen[0], r"
     )
     subprocess.run([sys.executable, "-c", code], check=True)
+
+
+def test_partial_owner_pattern_does_not_skip_the_owner():
+    # "acme/?" and "acme/[!l]*" match only some acme repos: acme must still be
+    # queried, and only the matching repos dropped
+    from ghir.owners import list_repos
+
+    def fake(query, variables):
+        return {
+            "repositoryOwner": {
+                "repositories": {
+                    "pageInfo": {"hasNextPage": False, "endCursor": None},
+                    "nodes": [
+                        {"nameWithOwner": "acme/x"},
+                        {"nameWithOwner": "acme/longname"},
+                    ],
+                }
+            }
+        }
+
+    def names(exclude):
+        return [
+            r["nameWithOwner"]
+            for r in list_repos(["acme"], graphql=fake, exclude=exclude)
+        ]
+
+    assert names(["acme/?"]) == ["acme/longname"]
+    assert names(["acme/[!l]*"]) == ["acme/longname"]
+    assert names(["acme/*"]) == []
