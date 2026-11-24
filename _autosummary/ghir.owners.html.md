@@ -38,6 +38,7 @@ another collector asks for permissions and fork counts.
 | [`is_excluded`](#ghir.owners.is_excluded)(repo_id, exclude)                  | Whether `owner/name` matches any fnmatch pattern of `exclude`.                        |
 | [`list_repos`](#ghir.owners.list_repos)(owners, \*[, graphql, fields, ...]) | Yield a record per repo over `owners` (`"@me"` expanded), minus `exclude`.            |
 | [`my_owners`](#ghir.owners.my_owners)(\*[, rest])                          | The authenticated user's login followed by their organizations' logins.               |
+| [`owner_is_excluded`](#ghir.owners.owner_is_excluded)(owner, exclude)              | Whether some pattern of `exclude` matches *every* repo of `owner`.                    |
 | [`owner_nodes`](#ghir.owners.owner_nodes)(owner, \*[, graphql, fields, ...]) | Yield the raw GraphQL nodes of every repo owned by `owner` (`fields` selects them).   |
 | [`urllib_graphql`](#ghir.owners.urllib_graphql)([token, url, timeout])          | A GraphQL transport over `urllib` and a token (default `$GITHUB_TOKEN`/`$GH_TOKEN`).  |
 
@@ -100,6 +101,22 @@ The authenticated user’s login followed by their organizations’ logins.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### ghir.owners.owner_is_excluded(owner, exclude)
+
+Whether some pattern of `exclude` matches *every* repo of `owner`.
+
+Only a pattern ending in `*` whose head matches `"<owner>/"` does
+(`"acme/*"`, `"*/*"`); `"acme/?"` or `"acme/[!l]*"` exclude only
+some of acme’s repos, so acme must still be listed.
+
+```pycon
+>>> owner_is_excluded("Acme", ["acme/*"]), owner_is_excluded("acme", ["acme/?"])
+(True, False)
+```
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 ### ghir.owners.owner_nodes(owner, \*, graphql=<function gh_graphql>, fields='nameWithOwner name description url isFork isArchived isPrivate', page_size=25)
 

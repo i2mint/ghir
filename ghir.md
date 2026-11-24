@@ -1,4 +1,4 @@
-> built 2026-11-22 11:53 UTC from fb680d5 (main) · ghir 0.0.4. Details: build_info.json
+> built 2026-11-24 01:14 UTC from 39f042a (main) · ghir 0.0.5. Details: build_info.json
 
 # index.html.md
 
@@ -584,6 +584,7 @@ another collector asks for permissions and fork counts.
 | [`is_excluded`](_autosummary/ghir.owners.html.md#ghir.owners.is_excluded)(repo_id, exclude)                  | Whether `owner/name` matches any fnmatch pattern of `exclude`.                        |
 | [`list_repos`](_autosummary/ghir.owners.html.md#ghir.owners.list_repos)(owners, \*[, graphql, fields, ...]) | Yield a record per repo over `owners` (`"@me"` expanded), minus `exclude`.            |
 | [`my_owners`](_autosummary/ghir.owners.html.md#ghir.owners.my_owners)(\*[, rest])                          | The authenticated user's login followed by their organizations' logins.               |
+| [`owner_is_excluded`](_autosummary/ghir.owners.html.md#ghir.owners.owner_is_excluded)(owner, exclude)              | Whether some pattern of `exclude` matches *every* repo of `owner`.                    |
 | [`owner_nodes`](_autosummary/ghir.owners.html.md#ghir.owners.owner_nodes)(owner, \*[, graphql, fields, ...]) | Yield the raw GraphQL nodes of every repo owned by `owner` (`fields` selects them).   |
 | [`urllib_graphql`](_autosummary/ghir.owners.html.md#ghir.owners.urllib_graphql)([token, url, timeout])          | A GraphQL transport over `urllib` and a token (default `$GITHUB_TOKEN`/`$GH_TOKEN`).  |
 
@@ -647,6 +648,22 @@ The authenticated user’s login followed by their organizations’ logins.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
+### ghir.owners.owner_is_excluded(owner, exclude)
+
+Whether some pattern of `exclude` matches *every* repo of `owner`.
+
+Only a pattern ending in `*` whose head matches `"<owner>/"` does
+(`"acme/*"`, `"*/*"`); `"acme/?"` or `"acme/[!l]*"` exclude only
+some of acme’s repos, so acme must still be listed.
+
+```pycon
+>>> owner_is_excluded("Acme", ["acme/*"]), owner_is_excluded("acme", ["acme/?"])
+(True, False)
+```
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### ghir.owners.owner_nodes(owner, \*, graphql=<function gh_graphql>, fields='nameWithOwner name description url isFork isArchived isPrivate', page_size=25)
 
 Yield the raw GraphQL nodes of every repo owned by `owner` (`fields` selects them).
@@ -684,18 +701,18 @@ Offline: reads the cache filled by [`ghir.cache.refresh()`](_autosummary/ghir.ca
 
 # About this build
 
-This documentation was built on **2026-11-22 11:53 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02"><code>fb680d5</code></a> on branch <code>main</code>, for **ghir 0.0.4** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-24 01:14 UTC** from commit <a href="https://github.com/i2mint/ghir/commit/39f042a2dc24d2f098c5a98c3362ae6ee7c8f99a"><code>39f042a</code></a> on branch <code>main</code>, for **ghir 0.0.5** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.4) is behind the latest release on PyPI (0.0.5): `pip install ghir` gives newer code than these docs describe.
+- The documented version (0.0.5) is behind the latest release on PyPI (0.0.6): `pip install ghir` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                    |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/ghir/commit/fb680d520a3390845433b3969ab1bbdc5cc6ba02"><code>fb680d520a3390845433b3969ab1bbdc5cc6ba02</code></a> |
+| Commit              | <a href="https://github.com/i2mint/ghir/commit/39f042a2dc24d2f098c5a98c3362ae6ee7c8f99a"><code>39f042a2dc24d2f098c5a98c3362ae6ee7c8f99a</code></a> |
 | Branch              | <code>main</code>                                                                                                                                  |
 | Tags at this commit | none                                                                                                                                               |
 | Working tree        | clean                                                                                                                                              |
@@ -706,15 +723,15 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/ghir</code>                                                                   |
-| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/45019386562">45019386562</a>          |
+| Run          | <a href="https://github.com/i2mint/ghir/actions/runs/45303399219">45303399219</a>          |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>fb680d520a3390845433b3969ab1bbdc5cc6ba02</code> (in the history of the built commit) |
+| Event commit | <code>39f042a2dc24d2f098c5a98c3362ae6ee7c8f99a</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.23  |
+| epythet  | 0.2.25  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -733,14 +750,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ghir/0.0.5/">0.0.5</a>, newer than the documented version (0.0.4).
+Latest release: <a href="https://pypi.org/project/ghir/0.0.6/">0.0.6</a>, newer than the documented version (0.0.5).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/ghir && cd ghir
-git checkout fb680d520a3390845433b3969ab1bbdc5cc6ba02
-pip install "epythet==0.2.23"
+git checkout 39f042a2dc24d2f098c5a98c3362ae6ee7c8f99a
+pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

@@ -15,7 +15,7 @@
 - [ghir.fetch](_autosummary/ghir.fetch.html.md): Fetching repo records from GitHub, through the &#96;gh&#96; CLI’s GraphQL access.
 - [ghir.local](_autosummary/ghir.local.html.md): Which GitHub repos are cloned on this machine, and where.
 - [ghir.owners](_autosummary/ghir.owners.html.md): Owner logins -&gt; repo records, stdlib only (no &#96;ir&#96;, no &#96;dol&#96;).
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 11:53 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-24 01:14 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
 
 ## Optional
 

@@ -21,6 +21,7 @@ ghir.owners
       is_excluded
       list_repos
       my_owners
+      owner_is_excluded
       owner_nodes
       urllib_graphql
    
